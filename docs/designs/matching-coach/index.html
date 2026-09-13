@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matching-Coach | Gợi ý Hồ sơ & Phân tích Tương thích</title>
+  <meta name="description" content="Khám phá hồ sơ hẹn hò với sự đồng hành của AI Clara - Phân tích mức độ tương thích trước khi Match.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo">C</div>
+      <div class="brand-info">
+        <h1>CLARA · Matching Coach <span class="tab-badge" style="background:var(--accent-purple); color:white;">AI Clara</span></h1>
+        <p>Decision-Support for Intentional Dating</p>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <a href="index.html" class="nav-tab-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Khám phá hồ sơ
+      </a>
+      <a href="compatibility-copilot.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Không gian phân tích
+        <span class="tab-badge">Mới</span>
+      </a>
+      <a href="my-analyses.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Đang tìm hiểu
+        <span class="tab-badge">3</span>
+      </a>
+      <a href="preferences-criteria.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Tiêu chí & Bộ lọc
+      </a>
+    </nav>
+
+    <div class="header-right">
+      <div class="pill-agent-status">
+        <span class="dot"></span>
+        Clara sẵn sàng
+      </div>
+      <div class="user-profile-btn">
+        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #6366f1, #ec4899); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;">HN</div>
+        <div style="font-size:0.85rem; text-align:left;">
+          <div style="font-weight:600;">Hải Nam</div>
+          <div style="font-size:0.72rem; color:var(--text-muted);">28 tuổi · Hà Nội</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Body -->
+  <main class="main-content">
+    <!-- Banner -->
+    <section class="page-banner">
+      <div class="page-title-group">
+        <h2>Gợi ý phù hợp theo giá trị sống của bạn</h2>
+        <p>Chọn một hồ sơ để Agent đối chiếu mức độ tương thích về lối sống, quan điểm và định hướng trước khi quyết định Match.</p>
+      </div>
+      <div style="display:flex; gap:0.75rem; align-items:center;">
+        <span style="font-size:0.8rem; color:var(--text-secondary);">Ưu tiên hiện tại:</span>
+        <span class="badge badge-purple">Định hướng lâu dài</span>
+        <span class="badge badge-rose">Giao tiếp cởi mở</span>
+      </div>
+    </section>
+
+    <!-- Discovery Layout: Filter Sidebar + Profile Grid -->
+    <div class="discovery-layout">
+      <!-- Left Filters -->
+      <aside class="filters-panel card">
+        <div class="filter-section">
+          <div class="filter-title">
+            Mục tiêu hẹn hò
+            <span style="font-size:0.7rem; color:var(--accent-pink);">Đặt trước</span>
+          </div>
+          <div class="tag-cloud">
+            <button class="tag-btn active">Nghiêm túc / Lâu dài</button>
+            <button class="tag-btn">Tìm hiểu chậm rãi</button>
+            <button class="tag-btn">Bạn đồng hành</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-title">Giá trị sống cốt lõi</div>
+          <div class="tag-cloud">
+            <button class="tag-btn active">Ưu tiên gia đình</button>
+            <button class="tag-btn active">Phát triển bản thân</button>
+            <button class="tag-btn">Tự do trải nghiệm</button>
+            <button class="tag-btn active">Minh bạch tài chính</button>
+            <button class="tag-btn">Yêu thiên nhiên</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-title">Ranh giới & Lối sống</div>
+          <div class="tag-cloud">
+            <button class="tag-btn active">Không hút thuốc</button>
+            <button class="tag-btn">Thích nuôi thú cưng</button>
+            <button class="tag-btn">Tập thể thao thường xuyên</button>
+            <button class="tag-btn">Ngủ sớm dậy sớm</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-title">Độ đầy đủ dữ liệu</div>
+          <div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+            Chỉ xem hồ sơ có trên 60% dữ liệu đã xác thực qua bảng hỏi:
+          </div>
+          <div class="confidence-bar-bg" style="height:8px;">
+            <div class="confidence-bar-fill" style="width: 70%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:4px;">
+            <span>Tối thiểu 60%</span>
+            <span>Đang chọn: 70%</span>
+          </div>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <a href="preferences-criteria.html" class="btn btn-outline btn-sm" style="width:100%;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Tùy chỉnh tiêu chí chi tiết
+          </a>
+        </div>
+      </aside>
+
+      <!-- Right Candidate Grid -->
+      <section class="profile-grid">
+
+        <!-- Candidate 1: Spotlight Candidate (Mai Linh) -->
+        <div class="candidate-card">
+          <div class="candidate-image-wrapper">
+            <!-- Stylized CSS Portrait Placeholder with High Aesthetic Detail -->
+            <div style="width:100%; height:100%; background:radial-gradient(circle at 50% 35%, #ec4899 0%, #312e81 60%, #0f172a 100%); display:flex; align-items:center; justify-content:center; position:relative;">
+              <!-- Simulated Avatar Silhouette -->
+              <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.2">
+                <circle cx="12" cy="8" r="4.5" fill="rgba(255,255,255,0.15)"/>
+                <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5" fill="rgba(255,255,255,0.15)"/>
+              </svg>
+              <div style="position:absolute; top:45%; font-family:var(--font-display); font-size:1.8rem; font-weight:800; color:rgba(255,255,255,0.25); letter-spacing:2px;">LINH · 26</div>
+            </div>
+
+            <div class="candidate-gradient-overlay"></div>
+            
+            <div class="candidate-badge-top">
+              <span class="badge badge-match">Độ khớp cao</span>
+              <span class="badge badge-purple">Data: 74%</span>
+            </div>
+
+            <div class="candidate-quick-actions">
+              <button class="btn-card-action" title="Lưu để xem sau">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </button>
+            </div>
+
+            <div class="candidate-info-overlay">
+              <div class="candidate-name-age">
+                Mai Linh, 26
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div class="candidate-job-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Product Designer · TP. Hồ Chí Minh (cách 4 km)
+              </div>
+            </div>
+          </div>
+
+          <div class="candidate-body">
+            <p class="candidate-bio">
+              "Thích những buổi sáng cà phê ngắm phố xá và cuối tuần đi workshop làm gốm. Tìm một người biết lắng nghe, tôn trọng không gian riêng và cùng nhau hoàn thiện bản thân."
+            </p>
+
+            <!-- AI Snapshot Insights -->
+            <div class="ai-preview-box">
+              <div class="ai-preview-header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+                CLARA Agent Tóm tắt nhanh
+              </div>
+              <p class="ai-preview-text">
+                ✓ <strong>Đồng điệu lớn:</strong> Gu thẩm mỹ, lối sống lành mạnh, tôn trọng ranh giới cá nhân.<br>
+                ❓ <strong>Cần trao đổi thêm:</strong> Cân bằng thời gian khi công việc bận rộn.
+              </p>
+            </div>
+
+            <div class="candidate-tags">
+              <span class="candidate-tag">🌱 Không hút thuốc</span>
+              <span class="candidate-tag">🎨 Nghệ thuật & Gốm</span>
+              <span class="candidate-tag">☕ Specialty Coffee</span>
+              <span class="candidate-tag">📚 Đọc sách phát triển</span>
+            </div>
+
+            <div class="candidate-footer">
+              <button class="btn btn-secondary btn-sm" style="flex:1;">Xem hồ sơ</button>
+              <a href="compatibility-copilot.html" class="btn btn-primary btn-sm" style="flex:2;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Phân tích với Agent
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 2: Tuấn Anh -->
+        <div class="candidate-card">
+          <div class="candidate-image-wrapper">
+            <div style="width:100%; height:100%; background:radial-gradient(circle at 50% 35%, #06b6d4 0%, #1e1b4b 60%, #0b0e17 100%); display:flex; align-items:center; justify-content:center; position:relative;">
+              <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.2">
+                <circle cx="12" cy="8" r="4.5" fill="rgba(255,255,255,0.15)"/>
+                <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5" fill="rgba(255,255,255,0.15)"/>
+              </svg>
+              <div style="position:absolute; top:45%; font-family:var(--font-display); font-size:1.8rem; font-weight:800; color:rgba(255,255,255,0.25); letter-spacing:2px;">TUẤN ANH · 29</div>
+            </div>
+            <div class="candidate-gradient-overlay"></div>
+            
+            <div class="candidate-badge-top">
+              <span class="badge badge-check">Khác biệt lịch trình</span>
+              <span class="badge badge-purple">Data: 68%</span>
+            </div>
+
+            <div class="candidate-quick-actions">
+              <button class="btn-card-action" title="Lưu để xem sau">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </button>
+            </div>
+
+            <div class="candidate-info-overlay">
+              <div class="candidate-name-age">Tuấn Anh, 29</div>
+              <div class="candidate-job-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Bác sĩ nội trú · Hà Nội (cách 8 km)
+              </div>
+            </div>
+          </div>
+
+          <div class="candidate-body">
+            <p class="candidate-bio">
+              "Công việc có những ca trực đêm bận rộn nhưng khi ở nhà tôi thích nấu ăn và chạy bộ cự ly dài. Tìm người độc lập, có thế giới riêng và thích sự ổn định."
+            </p>
+
+            <div class="ai-preview-box">
+              <div class="ai-preview-header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+                CLARA Agent Tóm tắt nhanh
+              </div>
+              <p class="ai-preview-text">
+                ✓ <strong>Đồng điệu:</strong> Tinh thần trách nhiệm cao, hướng tới mối quan hệ lâu dài.<br>
+                ⚠️ <strong>Cân nhắc:</strong> Lịch làm việc theo ca có thể cần bạn là người chủ động thích ứng thời gian.
+              </p>
+            </div>
+
+            <div class="candidate-tags">
+              <span class="candidate-tag">🏃 Chạy Marathon</span>
+              <span class="candidate-tag">🍳 Nấu ăn</span>
+              <span class="candidate-tag">🐱 Nuôi 1 chú mèo</span>
+            </div>
+
+            <div class="candidate-footer">
+              <button class="btn btn-secondary btn-sm" style="flex:1;">Xem hồ sơ</button>
+              <a href="compatibility-copilot.html" class="btn btn-primary btn-sm" style="flex:2;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Phân tích với Agent
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 3: Minh Châu -->
+        <div class="candidate-card">
+          <div class="candidate-image-wrapper">
+            <div style="width:100%; height:100%; background:radial-gradient(circle at 50% 35%, #8b5cf6 0%, #1e1b4b 60%, #0a0d14 100%); display:flex; align-items:center; justify-content:center; position:relative;">
+              <svg width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.2">
+                <circle cx="12" cy="8" r="4.5" fill="rgba(255,255,255,0.15)"/>
+                <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5" fill="rgba(255,255,255,0.15)"/>
+              </svg>
+              <div style="position:absolute; top:45%; font-family:var(--font-display); font-size:1.8rem; font-weight:800; color:rgba(255,255,255,0.25); letter-spacing:2px;">CHÂU · 27</div>
+            </div>
+            <div class="candidate-gradient-overlay"></div>
+            
+            <div class="candidate-badge-top">
+              <span class="badge badge-match">Giá trị tương đồng</span>
+              <span class="badge badge-purple">Data: 82%</span>
+            </div>
+
+            <div class="candidate-quick-actions">
+              <button class="btn-card-action" title="Lưu để xem sau">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </button>
+            </div>
+
+            <div class="candidate-info-overlay">
+              <div class="candidate-name-age">Minh Châu, 27</div>
+              <div class="candidate-job-location">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Content Strategist · Hà Nội (cách 3 km)
+              </div>
+            </div>
+          </div>
+
+          <div class="candidate-body">
+            <p class="candidate-bio">
+              "Thích nhạc Acoustic, camping vào mùa thu và trò chuyện sâu về tâm lý học. Tin rằng một mối quan hệ bền vững bắt đầu từ sự tôn trọng và chân thành."
+            </p>
+
+            <div class="ai-preview-box">
+              <div class="ai-preview-header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+                CLARA Agent Tóm tắt nhanh
+              </div>
+              <p class="ai-preview-text">
+                ✓ <strong>Đồng điệu cao:</strong> Phong cách giao tiếp cảm xúc, sở thích outdoor cuối tuần.<br>
+                ❓ <strong>Cần xác nhận:</strong> Kế hoạch tài chính cá nhân trong 3 năm tới.
+              </p>
+            </div>
+
+            <div class="candidate-tags">
+              <span class="candidate-tag">⛺ Camping</span>
+              <span class="candidate-tag">🎸 Acoustic</span>
+              <span class="candidate-tag">🧘 Mindfulness</span>
+            </div>
+
+            <div class="candidate-footer">
+              <button class="btn btn-secondary btn-sm" style="flex:1;">Xem hồ sơ</button>
+              <a href="compatibility-copilot.html" class="btn btn-primary btn-sm" style="flex:2;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Phân tích với Agent
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

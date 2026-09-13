@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CLARA Matching-Coach API Schemas and Payloads",
+  "description": "Contracts for Core Agent Reasoning, Data Mock, and Real User Data.",
+  "contracts": {
+    "analyze_request": {
+      "method": "POST",
+      "endpoint": "/api/clara/analyze",
+      "payload": {
+        "user_profile": {
+          "user_id": "usr_001",
+          "name": "Hải Nam",
+          "age": 28,
+          "relationship_goal": "Nghiêm túc, kết hôn trong 2-3 năm",
+          "deal_breakers": [
+            "Không hút thuốc lá",
+            "Yêu động vật"
+          ],
+          "lifestyle": "Dậy sớm, chạy bộ, cafe sáng, coi trọng sự nghiệp",
+          "dimension_weights": {
+            "long_term_goals": 0.90,
+            "core_values": 0.85,
+            "communication": 0.80,
+            "lifestyle_habits": 0.70,
+            "interests": 0.60,
+            "finances": 0.75,
+            "future_plans": 0.85
+          }
+        },
+        "candidate_profile": {
+          "candidate_id": "cand_01",
+          "name": "Mai Linh",
+          "age": 26,
+          "job": "Product Designer",
+          "location": "TP.HCM",
+          "bio": "Thích làm gốm Bát Tràng cuối tuần, yêu mèo. Đang chạy nước rút cho một dự án startup công nghệ. Thích lối sống tối giản.",
+          "questionnaire": {
+            "relationship_goal": "Tìm hiểu lâu dài, cùng nhau phát triển",
+            "smoking": "Không hút thuốc",
+            "pets": "Rất thích chó mèo",
+            "weekend_habit": "Workshop làm gốm, cafe sách, thiết kế",
+            "future_plan": null,
+            "financial_view": null
+          }
+        }
+      }
+    },
+    "analyze_response": {
+      "status": "success",
+      "data": {
+        "overall_compatibility": 81,
+        "data_completeness": 74,
+        "confidence_level": "Tin cậy khá",
+        "confidence_detail": "Dựa trên 24 câu hỏi hồ sơ & Bio. Chưa có dữ liệu tài chính cá nhân.",
+        "radar_axes": [
+          { "key": "long_term_goals", "label": "Mục tiêu lâu dài", "value": 85 },
+          { "key": "core_values", "label": "Giá trị sống", "value": 90 },
+          { "key": "communication", "label": "Giao tiếp", "value": 80 },
+          { "key": "lifestyle_habits", "label": "Lối sống & Thói quen", "value": 85 },
+          { "key": "interests", "label": "Sở thích & Giải trí", "value": 75 },
+          { "key": "finances", "label": "Tài chính & Thực tế", "value": 65 },
+          { "key": "future_plans", "label": "Kế hoạch tương lai", "value": 70 }
+        ],
+        "direct_comparison": [
+          {
+            "criterion": "Mục tiêu mối quan hệ",
+            "user_val": "Bạn: Nghiêm túc, kết hôn trong 2-3 năm",
+            "target_val": "Linh: Tìm hiểu lâu dài, cùng phát triển",
+            "status": "matched"
+          },
+          {
+            "criterion": "Ranh giới / Non-negotiables",
+            "user_val": "Bạn: Không hút thuốc, yêu động vật",
+            "target_val": "Linh: Không thuốc lá, thích chó mèo",
+            "status": "matched"
+          },
+          {
+            "criterion": "Nhịp sống & Cuối tuần",
+            "user_val": "Bạn: Cà phê sáng, chạy bộ, nghỉ ngơi",
+            "target_val": "Linh: Làm gốm, cafe sách, workshop",
+            "status": "matched"
+          },
+          {
+            "criterion": "Kế hoạch tương lai / Định cư",
+            "user_val": "Bạn: Ổn định tại TP.HCM",
+            "target_val": "Linh: Chưa nêu rõ (Cần xác nhận)",
+            "status": "needs_check"
+          }
+        ],
+        "checklist": {
+          "matched": [
+            {
+              "title": "Lối sống lành mạnh",
+              "match_score": 100,
+              "detail": "Cả hai đều không hút thuốc lá và ưa thích các hoạt động ban ngày.",
+              "source_evidence": "Câu hỏi khảo sát hồ sơ"
+            },
+            {
+              "title": "Ranh giới cá nhân",
+              "match_score": 90,
+              "detail": "Đều coi trọng việc cho nhau không gian riêng và nuôi dưỡng đam mê cá nhân.",
+              "source_evidence": "Phân tích Bio & Trả lời trắc nghiệm"
+            }
+          ],
+          "needs_check": [
+            {
+              "title": "Kế hoạch thời gian & Gia đình",
+              "match_score": null,
+              "detail": "Bạn muốn hướng tới kết hôn trong 2-3 năm; Linh chưa đề cập mốc thời gian cụ thể.",
+              "source_evidence": "Hồ sơ chưa điền mục này"
+            },
+            {
+              "title": "Phong cách chi tiêu",
+              "match_score": null,
+              "detail": "Chưa có thông tin về quan điểm tiết kiệm vs trải nghiệm hiện tại.",
+              "source_evidence": "Nên cảm nhận qua cách chọn địa điểm hẹn"
+            }
+          ],
+          "potential_friction": [
+            {
+              "title": "Áp lực thời gian công việc",
+              "match_score": null,
+              "detail": "Linh đang ở giai đoạn startup bận rộn; có thể không duy trì được nhắn tin liên tục mỗi ngày.",
+              "source_evidence": "Bio 'Đang chạy nước rút cho startup'"
+            }
+          ]
+        },
+        "icebreakers": [
+          "Chào Linh, anh thấy em nhắc tới gốm thủ công trong bio. Em hay đi workshop vào dịp cuối tuần à, có chỗ nào thú vị gợi ý anh với?",
+          "Anh cũng rất thích phong cách thiết kế tối giản. Điều gì khiến em chọn gắn bó với mảng Product Design vậy?"
+        ],
+        "probing_questions": [
+          "Khi công việc dồn dập, em thường xả stress bằng cách nào: muốn ở một mình hay trò chuyện với ai đó?",
+          "Em có hình dung rõ về cuộc sống gia đình trong 3-5 năm tới chưa?",
+          "Đối với em, sự tôn trọng không gian riêng tư được thể hiện cụ thể ra sao?"
+        ]
+      }
+    },
+    "reanalyze_request": {
+      "method": "POST",
+      "endpoint": "/api/clara/reanalyze",
+      "payload": {
+        "candidate_id": "cand_01",
+        "new_observation_note": "Sau buổi cafe chiều thứ Bảy tại Thảo Điền, Linh chia sẻ cô ấy muốn định cư lâu dài ở TP.HCM và cũng mong muốn ổn định gia đình trong 2 năm tới. Công việc startup tuy bận nhưng cuối tuần vẫn dành trọn vẹn cho người thân.",
+        "previous_analysis_id": "anly_001"
+      }
+    },
+    "reanalyze_response": {
+      "status": "success",
+      "data": {
+        "updated_overall_compatibility": 87,
+        "updated_data_completeness": 88,
+        "confidence_level": "Tin cậy cao",
+        "promoted_items": [
+          {
+            "from_category": "needs_check",
+            "to_category": "matched",
+            "title": "Kế hoạch thời gian & Gia đình",
+            "new_detail": "Linh xác nhận mong muốn ổn định gia đình trong 2 năm tới và gắn bó với TP.HCM.",
+            "source_evidence": "Ghi chú sau buổi hẹn ngày hôm nay"
+          }
+        ],
+        "updated_radar_axes": [
+          { "key": "long_term_goals", "label": "Mục tiêu lâu dài", "value": 90 },
+          { "key": "core_values", "label": "Giá trị sống", "value": 90 },
+          { "key": "communication", "label": "Giao tiếp", "value": 85 },
+          { "key": "lifestyle_habits", "label": "Lối sống & Thói quen", "value": 85 },
+          { "key": "interests", "label": "Sở thích & Giải trí", "value": 80 },
+          { "key": "finances", "label": "Tài chính & Thực tế", "value": 70 },
+          { "key": "future_plans", "label": "Kế hoạch tương lai", "value": 88 }
+        ]
+      }
+    }
+  }
+}
