@@ -9,7 +9,7 @@ interface RadarChartProps {
 const RadarChart = ({ axes, size = 260 }: RadarChartProps) => {
   const svg = useMemo(() => {
     const center = size / 2;
-    const radius = size * 0.365;
+    const radius = size * 0.3;
     const totalAxes = axes.length;
     const angleSlice = (Math.PI * 2) / totalAxes;
     const levels = [0.33, 0.66, 1.0];
@@ -51,23 +51,37 @@ const RadarChart = ({ axes, size = 260 }: RadarChartProps) => {
     });
 
     const labels = axes.map((axis, i) => {
-      const labelR = radius + 22;
+      const labelR = radius + 14;
       const { x, y, angle } = pointAt(labelR, i);
       let anchor: "middle" | "start" | "end" = "middle";
       if (Math.cos(angle) > 0.3) anchor = "start";
       else if (Math.cos(angle) < -0.3) anchor = "end";
+
+      const words = axis.label.split(" ");
+      const lines =
+        words.length > 1
+          ? [words.slice(0, Math.ceil(words.length / 2)).join(" "), words.slice(Math.ceil(words.length / 2)).join(" ")]
+          : [axis.label];
+      const startY = y + 4 - ((lines.length - 1) * 5.5) / 2;
+
       return (
         <text
           key={axis.key}
           x={x}
-          y={y + 4}
+          y={startY}
           textAnchor={anchor}
           fill="var(--clara-text-secondary)"
-          fontSize={9.5}
+          fontSize={9}
           fontFamily="'Plus Jakarta Sans', sans-serif"
           fontWeight={600}
+          style={{ cursor: "default" }}
         >
-          {axis.label}
+          <title>{axis.label}</title>
+          {lines.map((line, li) => (
+            <tspan key={li} x={x} dy={li === 0 ? 0 : "1.1em"}>
+              {line}
+            </tspan>
+          ))}
         </text>
       );
     });
@@ -80,7 +94,12 @@ const RadarChart = ({ axes, size = 260 }: RadarChartProps) => {
     const polygonPoints = dataPoints.map((p) => `${p.x},${p.y}`).join(" ");
 
     return (
-      <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`}>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox={`0 0 ${size} ${size}`}
+        style={{ overflow: "visible" }}
+      >
         <defs>
           <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#e11d48" stopOpacity={0.45} />
