@@ -2,9 +2,25 @@ import { Hono } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import type Database from "better-sqlite3";
 import { randomBytes } from "node:crypto";
+import { analyzeCandidate, reanalyzeCandidate } from "./modules/analyses/service.js";
+import { getCandidate, listCandidates } from "./modules/candidates/overlay.js";
+import { chatWithClara, clearChat } from "./modules/conversations/service.js";
+import {
+  addNote,
+  archiveExploration,
+  matchExploration,
+  saveExploring,
+} from "./modules/explorations/service.js";
 import { DEFAULT_WEIGHTS } from "./modules/users/defaults.js";
+import {
+  deleteAnalysisHistory,
+  getCriteria,
+  getPrivacy,
+  updateCriteria,
+  updatePrivacy,
+} from "./modules/users/service.js";
 import { hashPassword, verifyPassword } from "./security/password.js";
-import { consumeLoginAttempt } from "./security/rate-limit.js";
+import { consumeChatAttempt, consumeLoginAttempt } from "./security/rate-limit.js";
 import {
   COOKIE_NAME,
   createSession,
@@ -12,13 +28,13 @@ import {
   revokeSession,
   SESSION_TTL_MS,
 } from "./security/session.js";
+import { errorBody, HttpError } from "./shared/http.js";
+import { localeFromHeader } from "./shared/locale.js";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MIN_PASSWORD = 4;
+const MIN_PASSWORD = 8;
 
 type Env = { Variables: { user: { id: string; name: string; email: string } } };
-
-const errorBody = (code: string, message: string) => ({ error: { code, message } });
 
 const cookieOpts = {
   httpOnly: true,
@@ -27,43 +43,22 @@ const cookieOpts = {
   secure: process.env.NODE_ENV === "production",
 };
 
-const emptyCandidateOverlay = () => ({
-  overallCompatibility: 0,
-  dataCompleteness: 0,
-  confidenceLabel: "",
-  matchLabel: "",
-  matchBadgeTone: "check" as const,
-  aiQuickSummary: { positive: "", question: "" },
-  compareRows: [],
-  radarAxes: [
-    { key: "long_term_goals", label: "Mục tiêu lâu dài", value: 0 },
-    { key: "core_values", label: "Giá trị sống", value: 0 },
-    { key: "communication", label: "Giao tiếp", value: 0 },
-    { key: "lifestyle_habits", label: "Lối sống & Thói quen", value: 0 },
-    { key: "interests", label: "Sở thích & Giải trí", value: 0 },
-    { key: "finances", label: "Tài chính & Thực tế", value: 0 },
-    { key: "future_plans", label: "Kế hoạch tương lai", value: 0 },
-  ],
-  checklist: { matched: [], needsCheck: [], potentialFriction: [] },
-  icebreakers: [],
-  probingQuestions: [],
-  chatHistory: [],
-  stage: "chatting" as const,
-  stageLabel: "",
-  savedLabel: "",
-  notes: [],
-  nextDatePlan: { title: "", detail: "" },
-});
-
-const localeFrom = (header: string | undefined) =>
-  header?.toLowerCase().includes("ja") ? "ja" : "vi";
+const readJson = async <T>(c: { req: { json: () => Promise<unknown> } }) => {
+  try {
+    return (await c.req.json()) as T;
+  } catch {
+    throw new HttpError(400, "VALIDATION", "Invalid JSON");
+  }
+};
 
 export const createApp = (db: Database.Database) => {
   const app = new Hono<Env>();
-
   const publicAuth = new Set(["/api/auth/register", "/api/auth/login"]);
 
   app.onError((err, c) => {
+    if (err instanceof HttpError) {
+      return c.json(errorBody(err.code, err.message), err.status as 400);
+    }
     console.error(err);
     return c.json(errorBody("INTERNAL", "Internal server error"), 500);
   });
@@ -87,31 +82,21 @@ export const createApp = (db: Database.Database) => {
   });
 
   app.post("/api/auth/register", async (c) => {
-    let body: { name?: string; email?: string; password?: string };
-    try {
-      body = await c.req.json();
-    } catch {
-      return c.json(errorBody("VALIDATION", "Invalid JSON"), 400);
-    }
+    const body = await readJson<{ name?: string; email?: string; password?: string }>(c);
     const name = body.name?.trim() ?? "";
     const email = body.email?.trim().toLowerCase() ?? "";
     const password = body.password ?? "";
     if (!name || !EMAIL_PATTERN.test(email) || password.length < MIN_PASSWORD) {
       return c.json(errorBody("VALIDATION", "Invalid registration fields"), 400);
     }
-    const exists = db
-      .prepare("SELECT id FROM users WHERE email = ? COLLATE NOCASE")
-      .get(email);
-    if (exists) {
-      return c.json(errorBody("EMAIL_TAKEN", "Email already registered"), 409);
-    }
+    const exists = db.prepare("SELECT id FROM users WHERE email = ? COLLATE NOCASE").get(email);
+    if (exists) return c.json(errorBody("EMAIL_TAKEN", "Email already registered"), 409);
     const now = new Date().toISOString();
     const userId = `usr_${randomBytes(8).toString("hex")}`;
     try {
       db.transaction(() => {
         db.prepare(
-          `INSERT INTO users (id, email, name, password_hash, created_at)
-           VALUES (?, ?, ?, ?, ?)`
+          `INSERT INTO users (id, email, name, password_hash, created_at) VALUES (?, ?, ?, ?, ?)`
         ).run(userId, email, name, hashPassword(password), now);
         db.prepare(
           `INSERT INTO user_criteria (
@@ -132,12 +117,7 @@ export const createApp = (db: Database.Database) => {
   });
 
   app.post("/api/auth/login", async (c) => {
-    let body: { email?: string; password?: string };
-    try {
-      body = await c.req.json();
-    } catch {
-      return c.json(errorBody("VALIDATION", "Invalid JSON"), 400);
-    }
+    const body = await readJson<{ email?: string; password?: string }>(c);
     const email = body.email?.trim().toLowerCase() ?? "";
     const password = body.password ?? "";
     const ip = c.req.header("x-forwarded-for") ?? "local";
@@ -146,9 +126,7 @@ export const createApp = (db: Database.Database) => {
     }
     const row = db
       .prepare("SELECT id, name, email, password_hash AS passwordHash FROM users WHERE email = ? COLLATE NOCASE")
-      .get(email) as
-      | { id: string; name: string; email: string; passwordHash: string }
-      | undefined;
+      .get(email) as { id: string; name: string; email: string; passwordHash: string } | undefined;
     if (!row || !verifyPassword(password, row.passwordHash)) {
       return c.json(errorBody("INVALID_CREDENTIALS", "Invalid email or password"), 401);
     }
@@ -183,222 +161,108 @@ export const createApp = (db: Database.Database) => {
     });
   });
 
-  app.put("/api/me/criteria", async (c) => {
-    const sessionUser = c.get("user");
-    let body: { weights?: unknown; dealBreakerFlags?: Record<string, boolean>; version?: number; userId?: string };
-    try {
-      body = await c.req.json();
-    } catch {
-      return c.json(errorBody("VALIDATION", "Invalid JSON"), 400);
-    }
-    void body.userId;
-    const now = new Date().toISOString();
-    const current = db
-      .prepare("SELECT version, weights_json AS weightsJson FROM user_criteria WHERE user_id = ?")
-      .get(sessionUser.id) as { version: number; weightsJson: string } | undefined;
-    if (!current) return c.json(errorBody("NOT_FOUND", "Criteria not found"), 404);
-    if (body.version !== undefined && body.version !== current.version) {
-      return c.json(errorBody("VERSION_CONFLICT", "Criteria were updated elsewhere"), 409);
-    }
-    const weights = body.weights ?? JSON.parse(current.weightsJson);
-    const flags = body.dealBreakerFlags ?? {};
-    db.prepare(
-      `UPDATE user_criteria SET
-        weights_json = ?,
-        deal_breaker_no_smoking = COALESCE(?, deal_breaker_no_smoking),
-        deal_breaker_long_term = COALESCE(?, deal_breaker_long_term),
-        deal_breaker_pet_friendly = COALESCE(?, deal_breaker_pet_friendly),
-        version = version + 1,
-        updated_at = ?
-       WHERE user_id = ?`
-    ).run(
-      JSON.stringify(weights),
-      flags.no_smoking === undefined ? null : flags.no_smoking ? 1 : 0,
-      flags.long_term === undefined ? null : flags.long_term ? 1 : 0,
-      flags.pet_friendly === undefined ? null : flags.pet_friendly ? 1 : 0,
-      now,
-      sessionUser.id
-    );
-    const row = db
-      .prepare(
-        `SELECT u.name, c.age, c.city, c.intent, c.weights_json AS weightsJson, c.version,
-                c.deal_breaker_no_smoking AS noSmoking,
-                c.deal_breaker_long_term AS longTerm,
-                c.deal_breaker_pet_friendly AS petFriendly
-         FROM users u
-         JOIN user_criteria c ON c.user_id = u.id
-         WHERE u.id = ?`
-      )
-      .get(sessionUser.id) as {
-      name: string;
-      age: number | null;
-      city: string | null;
-      intent: string | null;
-      weightsJson: string;
-      version: number;
-      noSmoking: number;
-      longTerm: number;
-      petFriendly: number;
-    };
-    return c.json({
-      name: row.name,
-      age: row.age,
-      city: row.city,
-      intent: row.intent,
-      dealBreakers: [],
-      dealBreakerFlags: {
-        no_smoking: row.noSmoking === 1,
-        long_term: row.longTerm === 1,
-        pet_friendly: row.petFriendly === 1,
-      },
-      weights: JSON.parse(row.weightsJson),
-      version: row.version,
-    });
+  app.get("/api/me/criteria", (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    return c.json(getCriteria(db, c.get("user").id, locale));
   });
 
-  app.get("/api/me/privacy", (c) => {
-    const sessionUser = c.get("user");
-    const row = db
-      .prepare(
-        `SELECT incognito, hide_from_partner AS hideFromPartner, no_training AS noTraining
-         FROM privacy_settings WHERE user_id = ?`
-      )
-      .get(sessionUser.id) as
-      | { incognito: number; hideFromPartner: number; noTraining: number }
-      | undefined;
-    if (!row) return c.json(errorBody("NOT_FOUND", "Privacy not found"), 404);
-    return c.json({
-      incognito: row.incognito === 1,
-      hideFromPartner: row.hideFromPartner === 1,
-      noTraining: row.noTraining === 1,
-    });
+  app.put("/api/me/criteria", async (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const body = await readJson<{
+      weights?: unknown;
+      dealBreakerFlags?: Record<string, boolean>;
+      version?: number;
+    }>(c);
+    return c.json(updateCriteria(db, c.get("user").id, locale, body));
   });
+
+  app.get("/api/me/privacy", (c) => c.json(getPrivacy(db, c.get("user").id)));
 
   app.put("/api/me/privacy", async (c) => {
-    const sessionUser = c.get("user");
-    let body: { incognito?: boolean; hideFromPartner?: boolean; noTraining?: boolean; userId?: string };
-    try {
-      body = await c.req.json();
-    } catch {
-      return c.json(errorBody("VALIDATION", "Invalid JSON"), 400);
-    }
-    void body.userId;
-    db.prepare(
-      `UPDATE privacy_settings SET
-        incognito = COALESCE(?, incognito),
-        hide_from_partner = COALESCE(?, hide_from_partner),
-        no_training = COALESCE(?, no_training),
-        updated_at = ?
-       WHERE user_id = ?`
-    ).run(
-      body.incognito === undefined ? null : body.incognito ? 1 : 0,
-      body.hideFromPartner === undefined ? null : body.hideFromPartner ? 1 : 0,
-      body.noTraining === undefined ? null : body.noTraining ? 1 : 0,
-      new Date().toISOString(),
-      sessionUser.id
-    );
-    const row = db
-      .prepare(
-        `SELECT incognito, hide_from_partner AS hideFromPartner, no_training AS noTraining
-         FROM privacy_settings WHERE user_id = ?`
-      )
-      .get(sessionUser.id) as { incognito: number; hideFromPartner: number; noTraining: number };
-    return c.json({
-      incognito: row.incognito === 1,
-      hideFromPartner: row.hideFromPartner === 1,
-      noTraining: row.noTraining === 1,
-    });
+    const body = await readJson<{ incognito?: unknown; hideFromPartner?: unknown; noTraining?: unknown }>(c);
+    return c.json(updatePrivacy(db, c.get("user").id, body));
   });
 
   app.delete("/api/me/analysis-history", (c) => {
-    const sessionUser = c.get("user");
-    db.prepare("DELETE FROM explorations WHERE user_id = ?").run(sessionUser.id);
+    deleteAnalysisHistory(db, c.get("user").id);
     return c.body(null, 204);
   });
 
-  app.get("/api/me/criteria", (c) => {
-    const sessionUser = c.get("user");
-    const row = db
-      .prepare(
-        `SELECT u.name, c.age, c.city, c.intent, c.weights_json AS weightsJson, c.version,
-                c.deal_breaker_no_smoking AS noSmoking,
-                c.deal_breaker_long_term AS longTerm,
-                c.deal_breaker_pet_friendly AS petFriendly
-         FROM users u
-         JOIN user_criteria c ON c.user_id = u.id
-         WHERE u.id = ?`
-      )
-      .get(sessionUser.id) as
-      | {
-          name: string;
-          age: number | null;
-          city: string | null;
-          intent: string | null;
-          weightsJson: string;
-          version: number;
-          noSmoking: number;
-          longTerm: number;
-          petFriendly: number;
-        }
-      | undefined;
-    if (!row) return c.json(errorBody("NOT_FOUND", "Criteria not found"), 404);
-    return c.json({
-      name: row.name,
-      age: row.age,
-      city: row.city,
-      intent: row.intent,
-      dealBreakers: [],
-      dealBreakerFlags: {
-        no_smoking: row.noSmoking === 1,
-        long_term: row.longTerm === 1,
-        pet_friendly: row.petFriendly === 1,
-      },
-      weights: JSON.parse(row.weightsJson),
-      version: row.version,
-    });
+  app.get("/api/candidates", (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const raw = c.req.query("minCompleteness");
+    let min: number | undefined;
+    if (raw !== undefined) {
+      min = Number(raw);
+      if (!Number.isInteger(min) || min < 0 || min > 100) {
+        throw new HttpError(400, "VALIDATION", "minCompleteness must be 0–100");
+      }
+    }
+    return c.json({ items: listCandidates(db, c.get("user").id, locale, min) });
   });
 
-  app.get("/api/candidates", (c) => {
-    const locale = localeFrom(c.req.header("Accept-Language"));
-    const rows = db
-      .prepare(
-        `SELECT c.id, c.age, c.distance_km AS distanceKm, c.gradient,
-                i.name, i.job, i.location, i.bio, i.tags_json AS tagsJson
-         FROM candidates c
-         JOIN candidate_i18n i ON i.candidate_id = c.id AND i.locale = ?`
-      )
-      .all(locale) as Array<{
-      id: string;
-      age: number;
-      distanceKm: number;
-      gradient: string;
-      name: string;
-      job: string;
-      location: string;
-      bio: string;
-      tagsJson: string;
-    }>;
-    const items = rows.map((row) => ({
-      ...emptyCandidateOverlay(),
-      id: row.id,
-      name: row.name,
-      age: row.age,
-      job: row.job,
-      location: row.location,
-      distanceKm: row.distanceKm,
-      bio: row.bio,
-      tags: JSON.parse(row.tagsJson) as string[],
-      gradient: row.gradient,
-    }));
-    return c.json({ items });
+  app.get("/api/candidates/:candidateId", (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    return c.json(getCandidate(db, c.get("user").id, locale, c.req.param("candidateId")));
   });
 
   app.get("/api/explorations", (c) => {
-    const sessionUser = c.get("user");
-    const rows = db
-      .prepare("SELECT id FROM explorations WHERE user_id = ?")
-      .all(sessionUser.id);
-    return c.json({ items: rows });
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const includeArchived = c.req.query("includeArchived") !== "false";
+    const items = listCandidates(db, c.get("user").id, locale).filter(
+      (item) => includeArchived || item.stage !== "archived"
+    );
+    items.sort((a, b) => (a.savedLabel === b.savedLabel ? a.id.localeCompare(b.id) : 0));
+    return c.json({ items });
+  });
+
+  app.post("/api/explorations/:candidateId", (c) => {
+    const result = saveExploring(db, c.get("user").id, c.req.param("candidateId"));
+    return c.json({ candidateId: result.candidateId, stage: result.stage }, result.created ? 201 : 200);
+  });
+
+  app.post("/api/explorations/:candidateId/match", (c) =>
+    c.json(matchExploration(db, c.get("user").id, c.req.param("candidateId")))
+  );
+
+  app.post("/api/explorations/:candidateId/archive", (c) =>
+    c.json(archiveExploration(db, c.get("user").id, c.req.param("candidateId")))
+  );
+
+  app.post("/api/explorations/:candidateId/notes", async (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const body = await readJson<{ text?: string }>(c);
+    const note = addNote(db, c.get("user").id, c.req.param("candidateId"), body.text ?? "", locale);
+    return c.json(note, 201);
+  });
+
+  app.post("/api/clara/analyze", async (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const body = await readJson<{ candidateId?: string }>(c);
+    if (!body.candidateId) throw new HttpError(400, "VALIDATION", "candidateId is required");
+    return c.json(await analyzeCandidate(db, c.get("user").id, locale, body.candidateId));
+  });
+
+  app.post("/api/clara/reanalyze", async (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const body = await readJson<{ candidateId?: string }>(c);
+    if (!body.candidateId) throw new HttpError(400, "VALIDATION", "candidateId is required");
+    return c.json(await reanalyzeCandidate(db, c.get("user").id, locale, body.candidateId));
+  });
+
+  app.post("/api/clara/chat", async (c) => {
+    const locale = localeFromHeader(c.req.header("Accept-Language"));
+    const body = await readJson<{ candidateId?: string; text?: string }>(c);
+    if (!body.candidateId) throw new HttpError(400, "VALIDATION", "candidateId is required");
+    if (!consumeChatAttempt(c.get("user").id)) {
+      throw new HttpError(429, "RATE_LIMIT", "Too many chat requests");
+    }
+    return c.json(await chatWithClara(db, c.get("user").id, locale, body.candidateId, body.text ?? ""));
+  });
+
+  app.delete("/api/clara/chat/:candidateId", (c) => {
+    clearChat(db, c.get("user").id, c.req.param("candidateId"));
+    return c.body(null, 204);
   });
 
   return app;

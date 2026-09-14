@@ -3,15 +3,14 @@ import { Avatar, Button, Card, Input, Space, Tag, Typography } from "antd";
 import { DeleteOutlined, SendOutlined, StarFilled } from "@ant-design/icons";
 import type { Candidate } from "../../types";
 import { useAppState } from "../../store/AppStateContext";
-import { generateAgentReply } from "../../utils/chatSimulator";
 import { colors, gradientBrand } from "../../theme/themeConfig";
 import { useLocale } from "../../store/LocaleContext";
 
 const { Text } = Typography;
 
 const ChatPanel = ({ candidate }: { candidate: Candidate }) => {
-  const { appendChatMessage } = useAppState();
-  const { locale, strings } = useLocale();
+  const { sendChat, clearChat } = useAppState();
+  const { strings } = useLocale();
   const [draft, setDraft] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -29,14 +28,9 @@ const ChatPanel = ({ candidate }: { candidate: Candidate }) => {
 
   const send = (text: string) => {
     if (!text.trim()) return;
-    appendChatMessage(candidate.id, { id: "", sender: "user", text });
     setDraft("");
     setIsTyping(true);
-    setTimeout(() => {
-      const reply = generateAgentReply(candidate, text, locale);
-      appendChatMessage(candidate.id, reply);
-      setIsTyping(false);
-    }, 900);
+    void sendChat(candidate.id, text).finally(() => setIsTyping(false));
   };
 
   return (
@@ -57,7 +51,7 @@ const ChatPanel = ({ candidate }: { candidate: Candidate }) => {
             </Text>
           </div>
         </Space>
-        <Button size="small" icon={<DeleteOutlined />}>
+        <Button size="small" icon={<DeleteOutlined />} onClick={() => void clearChat(candidate.id)}>
           {strings.chat.clearHistory}
         </Button>
       </div>

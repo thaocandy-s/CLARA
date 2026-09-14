@@ -1,7 +1,9 @@
+import "./load-env.js";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { serve } from "@hono/node-server";
+import { describeActiveProvider } from "./ai/providers/index.js";
 import Database from "better-sqlite3";
 import { createApp } from "./app.js";
 import { applyMigrations } from "./db/apply-migrations.js";
@@ -22,4 +24,5 @@ const port = Number(process.env.PORT ?? 3000);
 
 serve({ fetch: app.fetch, port }, () => {
   console.log(`CLARA API listening on http://localhost:${port}`);
+  console.log(`Clara AI: ${describeActiveProvider()}`);
 });

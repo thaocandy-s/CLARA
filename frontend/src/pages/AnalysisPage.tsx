@@ -1,4 +1,5 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { Button, Card, Col, Progress, Row, Space, Tag, Typography, message } from "antd";
 import { ArrowLeftOutlined, HeartFilled } from "@ant-design/icons";
 import { useAppState } from "../store/AppStateContext";
@@ -14,12 +15,18 @@ const { Title, Text, Paragraph } = Typography;
 
 const AnalysisPage = () => {
   const { candidateId } = useParams();
-  const { getCandidate } = useAppState();
+  const { getCandidate, analyze, saveExploring, matchCandidate, ready } = useAppState();
   const { strings } = useLocale();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
   const candidate = candidateId ? getCandidate(candidateId) : undefined;
+
+  useEffect(() => {
+    if (candidateId) void analyze(candidateId);
+  }, [candidateId, analyze]);
+
+  if (!ready) return null;
   if (!candidate) return <Navigate to="/" replace />;
 
   return (
@@ -159,6 +166,7 @@ const AnalysisPage = () => {
                 block
                 icon={<BookmarkOutlined />}
                 onClick={() => {
+                  void saveExploring(candidate.id);
                   messageApi.success(strings.analysis.savedToast);
                   navigate("/analyses");
                 }}
@@ -169,7 +177,10 @@ const AnalysisPage = () => {
                 block
                 type="primary"
                 icon={<HeartFilled />}
-                onClick={() => messageApi.success(strings.analysis.matchToast)}
+                onClick={() => {
+                  void matchCandidate(candidate.id);
+                  messageApi.success(strings.analysis.matchToast);
+                }}
               >
                 {strings.analysis.matchAndMessage}
               </Button>
