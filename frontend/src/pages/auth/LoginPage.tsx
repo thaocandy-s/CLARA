@@ -22,8 +22,8 @@ const LoginPage = () => {
   const [form] = Form.useForm<LoginFormValues>();
   const [api, contextHolder] = notification.useNotification();
 
-  const attemptLogin = (email: string, password: string) => {
-    const success = login(email, password);
+  const attemptLogin = async (email: string, password: string) => {
+    const success = await login(email, password);
     if (success) {
       api.success({ message: strings.auth.loginSuccessTitle, description: strings.auth.loginSuccessDesc });
       setTimeout(() => navigate("/"), 600);

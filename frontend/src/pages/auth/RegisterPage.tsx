@@ -22,8 +22,8 @@ const RegisterPage = () => {
   const [form] = Form.useForm<RegisterFormValues>();
   const [api, contextHolder] = notification.useNotification();
 
-  const onFinish = (values: RegisterFormValues) => {
-    const success = register(values.name, values.email, values.password);
+  const onFinish = async (values: RegisterFormValues) => {
+    const success = await register(values.name, values.email, values.password);
     if (success) {
       api.success({ message: strings.auth.registerSuccessTitle, description: strings.auth.registerSuccessDesc });
       setTimeout(() => navigate("/login", { state: { email: values.email } }), 1000);
