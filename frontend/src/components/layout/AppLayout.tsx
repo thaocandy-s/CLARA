@@ -193,7 +193,10 @@ const AppLayout = () => {
               <div className="header-user-meta" style={{ fontSize: 13, lineHeight: 1.3, whiteSpace: "nowrap" }}>
                 <div style={{ fontWeight: 600 }}>{user?.name}</div>
                 <div style={{ fontSize: 11, color: "var(--clara-text-muted)" }}>
-                  {interpolate(strings.header.userMeta, { age: 28, city: "Hà Nội" })}
+                  {interpolate(strings.header.userMeta, {
+                    age: user?.age ?? "—",
+                    city: user?.city ?? "—",
+                  })}
                 </div>
               </div>
             </div>

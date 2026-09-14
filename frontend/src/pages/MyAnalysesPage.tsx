@@ -19,7 +19,7 @@ const stageColor: Record<DatingStage, string> = {
 };
 
 const MyAnalysesPage = () => {
-  const { candidates, addNote, recalculate } = useAppState();
+  const { candidates, addNote, recalculate, archiveCandidate } = useAppState();
   const { strings } = useLocale();
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedId, setSelectedId] = useState(candidates[0]?.id);
@@ -28,21 +28,30 @@ const MyAnalysesPage = () => {
 
   const active = candidates.find((c) => c.id === selectedId) ?? candidates[0];
 
+  if (!active) return null;
+
   const handleAddNote = () => {
-    if (!noteDraft.trim()) return;
-    addNote(active.id, noteDraft.trim());
-    setNoteDraft("");
-    setReadyToRecalculate(true);
+    if (!noteDraft.trim() || !active) return;
+    void addNote(active.id, noteDraft.trim()).then((note) => {
+      if (note) {
+        setNoteDraft("");
+        setReadyToRecalculate(true);
+      }
+    });
   };
 
   const handleRecalculate = () => {
-    recalculate(active.id);
-    setReadyToRecalculate(false);
-    messageApi.success(
-      interpolate(strings.myAnalyses.recalculateToast, {
-        value: Math.min(98, active.dataCompleteness + 14),
-      })
-    );
+    if (!active) return;
+    void recalculate(active.id).then((updated) => {
+      setReadyToRecalculate(false);
+      if (updated) {
+        messageApi.success(
+          interpolate(strings.myAnalyses.recalculateToast, {
+            value: updated.dataCompleteness,
+          })
+        );
+      }
+    });
   };
 
   return (
@@ -145,7 +154,13 @@ const MyAnalysesPage = () => {
                 <Link to={`/analysis/${active.id}`}>
                   <Button icon={<WechatWorkOutlined />}>{strings.myAnalyses.chatWithClara}</Button>
                 </Link>
-                <Button icon={<SaveOutlined />} onClick={() => messageApi.info(strings.myAnalyses.archivedToast)}>
+                <Button
+                  icon={<SaveOutlined />}
+                  onClick={() => {
+                    void archiveCandidate(active.id);
+                    messageApi.info(strings.myAnalyses.archivedToast);
+                  }}
+                >
                   {strings.myAnalyses.archive}
                 </Button>
               </div>

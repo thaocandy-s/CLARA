@@ -11,6 +11,8 @@ export const DEMO_ACCOUNT = {
 export interface AuthUser {
   name: string;
   email: string;
+  age?: number | null;
+  city?: string | null;
 }
 
 interface AuthContextValue {
@@ -35,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const res = await apiJson("/api/me");
         if (!cancelled && res.ok) {
           const me = (await res.json()) as AuthUser;
-          setUser({ name: me.name, email: me.email });
+          setUser({ name: me.name, email: me.email, age: me.age, city: me.city });
         } else if (!cancelled) {
           setUser(null);
         }
@@ -59,7 +61,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       if (!res.ok) return false;
       const data = (await res.json()) as { user: AuthUser };
-      setUser(data.user);
+      const meRes = await apiJson("/api/me");
+      if (meRes.ok) {
+        const me = (await meRes.json()) as AuthUser;
+        setUser({ name: me.name, email: me.email, age: me.age, city: me.city });
+      } else {
+        setUser(data.user);
+      }
       return true;
     } catch {
       return false;

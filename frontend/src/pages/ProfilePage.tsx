@@ -15,12 +15,13 @@ const { Title, Text, Paragraph } = Typography;
 
 const ProfilePage = () => {
   const { candidateId } = useParams();
-  const { getCandidate } = useAppState();
+  const { getCandidate, saveExploring, ready } = useAppState();
   const { strings } = useLocale();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
   const candidate = candidateId ? getCandidate(candidateId) : undefined;
+  if (!ready) return null;
   if (!candidate) return <Navigate to="/" replace />;
 
   const badgeTone = candidate.matchBadgeTone === "match" ? colors.match : colors.check;
@@ -145,7 +146,10 @@ const ProfilePage = () => {
                 <Button
                   block
                   icon={<BookmarkOutlined />}
-                  onClick={() => messageApi.success(strings.profile.savedToast)}
+                  onClick={() => {
+                    void saveExploring(candidate.id);
+                    messageApi.success(strings.profile.savedToast);
+                  }}
                 >
                   {strings.candidateCard.saveForLater}
                 </Button>
