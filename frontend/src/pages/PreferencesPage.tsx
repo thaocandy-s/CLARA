@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Modal, Row, Slider, Switch, Typography, message } from "antd";
 import { DeleteOutlined, LockOutlined, SafetyCertificateOutlined, SaveOutlined } from "@ant-design/icons";
+import { apiJson } from "../api/client";
 import { useAppState } from "../store/AppStateContext";
 import { colors } from "../theme/themeConfig";
 import { useLocale } from "../store/LocaleContext";
@@ -20,7 +21,7 @@ const privacyMeta = [
 ];
 
 const PreferencesPage = () => {
-  const { userProfile, updateWeights } = useAppState();
+  const { userProfile, saveCriteria, savePrivacy, deleteHistory } = useAppState();
   const { strings } = useLocale();
   const [messageApi, contextHolder] = message.useMessage();
   const [dealBreakers, setDealBreakers] = useState(
@@ -31,13 +32,54 @@ const PreferencesPage = () => {
   );
   const [weights, setWeights] = useState(userProfile.weights);
 
+  useEffect(() => {
+    setWeights(userProfile.weights);
+  }, [userProfile.weights]);
+
+  useEffect(() => {
+    void apiJson("/api/me/privacy").then(async (res) => {
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        incognito: boolean;
+        hideFromPartner: boolean;
+        noTraining: boolean;
+      };
+      setPrivacy({
+        incognito: data.incognito,
+        hide_from_partner: data.hideFromPartner,
+        no_training: data.noTraining,
+      });
+    });
+    void apiJson("/api/me/criteria").then(async (res) => {
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        dealBreakerFlags: { no_smoking: boolean; long_term: boolean; pet_friendly: boolean };
+      };
+      setDealBreakers(data.dealBreakerFlags);
+    });
+  }, []);
+
   const handleWeightChange = (key: string, value: number) => {
     setWeights((prev) => prev.map((w) => (w.key === key ? { ...w, value } : w)));
   };
 
   const handleSave = () => {
-    updateWeights(weights);
-    messageApi.success(strings.preferences.savedToast);
+    void (async () => {
+      const okCriteria = await saveCriteria({
+        weights,
+        dealBreakerFlags: {
+          no_smoking: !!dealBreakers.no_smoking,
+          long_term: !!dealBreakers.long_term,
+          pet_friendly: !!dealBreakers.pet_friendly,
+        },
+      });
+      const okPrivacy = await savePrivacy({
+        incognito: !!privacy.incognito,
+        hideFromPartner: !!privacy.hide_from_partner,
+        noTraining: !!privacy.no_training,
+      });
+      if (okCriteria && okPrivacy) messageApi.success(strings.preferences.savedToast);
+    })();
   };
 
   const handleDeleteHistory = () => {
@@ -47,7 +89,10 @@ const PreferencesPage = () => {
       okText: strings.preferences.confirmOk,
       okButtonProps: { danger: true },
       cancelText: strings.preferences.confirmCancel,
-      onOk: () => messageApi.success(strings.preferences.deletedToast),
+      onOk: async () => {
+        const ok = await deleteHistory();
+        if (ok) messageApi.success(strings.preferences.deletedToast);
+      },
     });
   };
 

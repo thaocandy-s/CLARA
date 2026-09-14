@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-
-const STORAGE_KEY = "clara-auth-user";
-const KNOWN_USERS_KEY = "clara-known-users";
+import { apiJson } from "../api/client";
 
 export const DEMO_ACCOUNT = {
   name: "Nghi yeu Duc",
@@ -13,87 +11,92 @@ export const DEMO_ACCOUNT = {
 export interface AuthUser {
   name: string;
   email: string;
+  age?: number | null;
+  city?: string | null;
 }
 
 interface AuthContextValue {
   user: AuthUser | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
-  register: (name: string, email: string, password: string) => boolean;
-  logout: () => void;
+  ready: boolean;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
 }
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const readStoredUser = (): AuthUser | null => {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as AuthUser;
-  } catch {
-    return null;
-  }
-};
-
-type KnownUsers = Record<string, string>;
-
-const readKnownUsers = (): KnownUsers => {
-  if (typeof window === "undefined") return {};
-  const raw = window.localStorage.getItem(KNOWN_USERS_KEY);
-  if (!raw) return {};
-  try {
-    return JSON.parse(raw) as KnownUsers;
-  } catch {
-    return {};
-  }
-};
-
-const rememberUserName = (email: string, name: string) => {
-  const knownUsers = readKnownUsers();
-  knownUsers[email] = name;
-  window.localStorage.setItem(KNOWN_USERS_KEY, JSON.stringify(knownUsers));
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(readStoredUser);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    } else {
-      window.localStorage.removeItem(STORAGE_KEY);
+    let cancelled = false;
+    const restore = async () => {
+      try {
+        const res = await apiJson("/api/me");
+        if (!cancelled && res.ok) {
+          const me = (await res.json()) as AuthUser;
+          setUser({ name: me.name, email: me.email, age: me.age, city: me.city });
+        } else if (!cancelled) {
+          setUser(null);
+        }
+      } catch {
+        if (!cancelled) setUser(null);
+      } finally {
+        if (!cancelled) setReady(true);
+      }
+    };
+    void restore();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const res = await apiJson("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) return false;
+      const data = (await res.json()) as { user: AuthUser };
+      const meRes = await apiJson("/api/me");
+      if (meRes.ok) {
+        const me = (await meRes.json()) as AuthUser;
+        setUser({ name: me.name, email: me.email, age: me.age, city: me.city });
+      } else {
+        setUser(data.user);
+      }
+      return true;
+    } catch {
+      return false;
     }
-  }, [user]);
-
-  // Mock auth: there is no real backend, so "credentials" are just format-checked.
-  const login = (email: string, password: string) => {
-    if (!EMAIL_PATTERN.test(email) || password.length < 4) return false;
-
-    const knownName = readKnownUsers()[email];
-    const name =
-      knownName ||
-      (email === DEMO_ACCOUNT.email ? DEMO_ACCOUNT.name : email.split("@")[0] || "Người dùng");
-    setUser({ name, email });
-    return true;
   };
 
-  // Registration only records the account; it does not log the user in.
-  const register = (name: string, email: string, password: string) => {
-    if (!EMAIL_PATTERN.test(email) || password.length < 4) return false;
-    if (readKnownUsers()[email]) return false;
-
-    rememberUserName(email, name);
-    return true;
+  const register = async (name: string, email: string, password: string) => {
+    try {
+      const res = await apiJson("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ name, email, password }),
+      });
+      return res.status === 201;
+    } catch {
+      return false;
+    }
   };
 
-  const logout = () => setUser(null);
+  const logout = async () => {
+    try {
+      await apiJson("/api/auth/logout", { method: "POST" });
+    } finally {
+      setUser(null);
+    }
+  };
 
   const value = useMemo(
-    () => ({ user, isAuthenticated: !!user, login, register, logout }),
-    [user]
+    () => ({ user, isAuthenticated: !!user, ready, login, register, logout }),
+    [user, ready]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
