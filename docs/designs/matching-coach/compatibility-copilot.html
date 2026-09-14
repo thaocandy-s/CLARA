@@ -239,7 +239,7 @@
             <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; color:var(--text-accent);">
               Bản đồ tương thích 7 trục
             </span>
-            <span class="badge badge-match" style="font-size:0.68rem;">Đồng thuận 81%</span>
+            <span class="badge badge-match" id="overall-match-badge" style="font-size:0.68rem;">Đồng thuận 81%</span>
           </div>
 
           <!-- SVG Radar Container rendered by app.js -->
@@ -268,7 +268,7 @@
               Phù hợp & Đồng điệu (4)
             </div>
 
-            <div class="check-item matched">
+            <div class="check-item matched" data-checklist-id="healthy-lifestyle">
               <div class="check-item-header">
                 <span>Lối sống lành mạnh</span>
                 <span class="badge badge-match" style="font-size:0.65rem;">Khớp 100%</span>
@@ -277,7 +277,7 @@
               <div class="check-data-source">Nguồn: Câu hỏi khảo sát hồ sơ</div>
             </div>
 
-            <div class="check-item matched">
+            <div class="check-item matched" data-checklist-id="personal-boundaries">
               <div class="check-item-header">
                 <span>Ranh giới cá nhân</span>
                 <span class="badge badge-match" style="font-size:0.65rem;">Khớp 90%</span>
@@ -294,22 +294,22 @@
               Cần xác nhận thêm khi trò chuyện (2)
             </div>
 
-            <div class="check-item check">
+            <div class="check-item check" data-checklist-id="marriage-timeline">
               <div class="check-item-header">
                 <span>Kế hoạch thời gian & Gia đình</span>
-                <span class="badge badge-check" style="font-size:0.65rem;">Chưa đủ dữ liệu</span>
+                <span class="badge badge-check" id="badge-marriage-timeline" style="font-size:0.65rem;">Chưa đủ dữ liệu</span>
               </div>
-              <div class="check-item-detail">Bạn muốn hướng tới kết hôn trong 2-3 năm; Linh chưa đề cập mốc thời gian cụ thể.</div>
-              <div class="check-data-source">Nguồn: Hồ sơ chưa điền mục này</div>
+              <div class="check-item-detail" id="detail-marriage-timeline">Bạn muốn hướng tới kết hôn trong 2-3 năm; Linh chưa đề cập mốc thời gian cụ thể.</div>
+              <div class="check-data-source" id="source-marriage-timeline">Nguồn: Hồ sơ chưa điền mục này</div>
             </div>
 
-            <div class="check-item check">
+            <div class="check-item check" data-checklist-id="spending-style">
               <div class="check-item-header">
                 <span>Phong cách chi tiêu</span>
-                <span class="badge badge-check" style="font-size:0.65rem;">Cần quan sát</span>
+                <span class="badge badge-check" id="badge-spending-style" style="font-size:0.65rem;">Cần quan sát</span>
               </div>
-              <div class="check-item-detail">Chưa có thông tin về quan điểm tiết kiệm vs trải nghiệm hiện tại.</div>
-              <div class="check-data-source">Nguồn: Nên cảm nhận qua cách chọn địa điểm hẹn</div>
+              <div class="check-item-detail" id="detail-spending-style">Chưa có thông tin về quan điểm tiết kiệm vs trải nghiệm hiện tại.</div>
+              <div class="check-data-source" id="source-spending-style">Nguồn: Nên cảm nhận qua cách chọn địa điểm hẹn</div>
             </div>
           </div>
 
@@ -320,13 +320,13 @@
               Điểm khác biệt cần cân nhắc (1)
             </div>
 
-            <div class="check-item friction">
+            <div class="check-item friction" data-checklist-id="work-pressure">
               <div class="check-item-header">
                 <span>Áp lực thời gian công việc</span>
-                <span class="badge badge-friction" style="font-size:0.65rem;">Lưu ý</span>
+                <span class="badge badge-friction" id="badge-work-pressure" style="font-size:0.65rem;">Lưu ý</span>
               </div>
-              <div class="check-item-detail">Linh đang ở giai đoạn startup bận rộn; có thể không duy trì được nhắn tin liên tục mỗi ngày.</div>
-              <div class="check-data-source">Nguồn: Bio "Đang chạy nước rút cho startup"</div>
+              <div class="check-item-detail" id="detail-work-pressure">Linh đang ở giai đoạn startup bận rộn; có thể không duy trì được nhắn tin liên tục mỗi ngày.</div>
+              <div class="check-data-source" id="source-work-pressure">Nguồn: Bio "Đang chạy nước rút cho startup"</div>
             </div>
           </div>
         </div>
@@ -351,17 +351,9 @@
 
   <script src="app.js"></script>
   <script>
-    // Initialize 7-Axis Compatibility Radar Chart for Mai Linh
+    // Initialize 7-Axis Compatibility Radar Chart for Mai Linh using synchronized radarState
     document.addEventListener('DOMContentLoaded', () => {
-      renderRadarChart('radar-container', [
-        { label: 'Mục tiêu lâu dài', value: 85 },
-        { label: 'Giá trị sống', value: 90 },
-        { label: 'Giao tiếp', value: 80 },
-        { label: 'Lối sống & Thói quen', value: 85 },
-        { label: 'Sở thích & Giải trí', value: 75 },
-        { label: 'Tài chính & Thực tế', value: 65 },
-        { label: 'Kế hoạch tương lai', value: 70 }
-      ]);
+      renderRadarChart('radar-container', radarState);
     });
   </script>
 </body>

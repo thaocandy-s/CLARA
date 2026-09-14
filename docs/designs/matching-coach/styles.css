@@ -754,9 +754,8 @@ button, input, textarea, select {
   display: grid;
   grid-template-columns: 340px 1fr 380px;
   gap: 1.5rem;
-  height: calc(100vh - 110px);
-  min-height: 580px;
-  max-height: calc(100vh - 95px);
+  height: calc(100vh - 95px);
+  min-height: 540px;
 }
 
 /* Column 1: Profiles & Comparison */
@@ -765,6 +764,7 @@ button, input, textarea, select {
   flex-direction: column;
   gap: 1.25rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-right: 6px;
   height: 100%;
   min-height: 0;
@@ -777,6 +777,7 @@ button, input, textarea, select {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .comparison-header {
@@ -790,7 +791,7 @@ button, input, textarea, select {
 
 .target-profile-spotlight {
   position: relative;
-  height: 190px;
+  height: 140px;
   background: #f1f5f9;
 }
 
@@ -916,6 +917,7 @@ button, input, textarea, select {
   flex: 1 1 0;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 1.25rem 1rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
@@ -1101,6 +1103,7 @@ button, input, textarea, select {
   flex-direction: column;
   gap: 1.25rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-right: 6px;
   height: 100%;
   min-height: 0;
@@ -1109,7 +1112,7 @@ button, input, textarea, select {
 
 .column-left::-webkit-scrollbar,
 .column-right::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .column-left::-webkit-scrollbar-track,
@@ -1120,7 +1123,7 @@ button, input, textarea, select {
 
 .column-left::-webkit-scrollbar-thumb,
 .column-right::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.16);
+  background: rgba(15, 23, 42, 0.22);
   border-radius: 10px;
 }
 
@@ -1566,3 +1569,124 @@ input:checked + .slider:before {
 .newly-added {
   animation: highlight-pulse 2s ease-out;
 }
+
+/* ============================================================
+   LIVE REFLECTION BRIDGE — Agent Output → Radar + Checklist
+   ============================================================ */
+
+/* Radar chart "axis updated" glow flash */
+@keyframes radar-flash {
+  0%   { filter: drop-shadow(0 0 0px rgba(225, 29, 72, 0)); }
+  30%  { filter: drop-shadow(0 0 12px rgba(225, 29, 72, 0.7)); }
+  70%  { filter: drop-shadow(0 0 8px rgba(225, 29, 72, 0.4)); }
+  100% { filter: drop-shadow(0 0 0px rgba(225, 29, 72, 0)); }
+}
+
+.radar-svg-container.updating svg {
+  animation: radar-flash 1.2s ease-out;
+}
+
+/* Score badge on radar — shown after update */
+.radar-score-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: var(--gradient-brand);
+  color: #fff;
+  margin-left: 6px;
+  vertical-align: middle;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.radar-score-badge.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* "Mới" badge on checklist items */
+@keyframes badge-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.badge-new-insight {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #7c3aed, #e11d48);
+  color: #fff;
+  margin-left: 6px;
+  animation: badge-pop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Checklist item status transition: any → matched */
+@keyframes item-promote {
+  0%   { box-shadow: 0 0 0 0px rgba(5, 150, 105, 0); background: var(--status-match-bg); }
+  40%  { box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.25); }
+  100% { box-shadow: 0 0 0 0px rgba(5, 150, 105, 0); }
+}
+
+.check-item.live-promoted {
+  animation: item-promote 1s ease-out forwards;
+}
+
+/* Checklist item status transition: any → friction */
+@keyframes item-flag {
+  0%   { box-shadow: 0 0 0 0px rgba(225, 29, 72, 0); background: var(--status-friction-bg); }
+  40%  { box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.25); }
+  100% { box-shadow: 0 0 0 0px rgba(225, 29, 72, 0); }
+}
+
+.check-item.live-flagged {
+  animation: item-flag 1s ease-out forwards;
+}
+
+/* Live update notification toast (appears above radar card) */
+@keyframes toast-slide {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+.live-update-toast {
+  position: absolute;
+  top: -2.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 10;
+  pointer-events: none;
+  animation: toast-slide 3s ease-in-out forwards;
+}
+
+/* Wrapper for radar card needs relative positioning for toast */
+.radar-chart-card {
+  position: relative;
+}
+
+/* Overall match % badge — pulse when score changes */
+@keyframes score-bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.18); background: var(--gradient-brand); color: #fff; }
+  100% { transform: scale(1); }
+}
+
+.badge-match.score-updated {
+  animation: score-bump 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
