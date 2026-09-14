@@ -7,6 +7,7 @@ export const locales: { value: Locale; label: string }[] = [
 
 const vi = {
   header: {
+    navSearch: "Tìm kiếm cùng CLARA",
     navDiscover: "Khám phá hồ sơ",
     navMyAnalyses: "Đang tìm hiểu",
     navPreferences: "Tiêu chí & Bộ lọc",
@@ -17,7 +18,7 @@ const vi = {
     logout: "Đăng xuất",
   },
   footer: {
-    tagline: "Decision-support copilot cho hẹn hò có chủ đích.",
+    tagline: "Match on what you couldn't put into words.",
     linksTitle: "Điều hướng",
     principlesTitle: "Tôn chỉ",
     principle1: "Bạn luôn là người quyết định cuối cùng.",
@@ -105,6 +106,7 @@ const vi = {
     viewProfileShort: "Xem hồ sơ",
     analyzeWithAgent: "Phân tích với Agent",
     analyzeShort: "Phân tích với Agent",
+    analyzeCompact: "Phân tích",
     distanceSuffix: "(cách {km} km)",
   },
   profile: {
@@ -128,6 +130,7 @@ const vi = {
     radarFootnote: "* Trọng số biểu đồ đã tính toán theo các tiêu chí ưu tiên của bạn",
     saveToExploring: 'Lưu vào "Đang tìm hiểu"',
     matchAndMessage: "Chủ động Match & Gửi lời nhắn",
+    matchShort: "Match & Nhắn tin",
     savedToast: 'Đã lưu vào "Đang tìm hiểu"!',
     matchToast: "Đã gửi lời mời kết nối kèm câu mở đầu gợi ý từ Agent!",
   },
@@ -153,6 +156,45 @@ const vi = {
     queryDateIdea: "Nên hẹn gặp ở địa điểm nào cho buổi date đầu tiên?",
     queryFinance: "Quan điểm tài chính có mâu thuẫn với tôi không?",
     queryKeyAdvice: "Nếu match thì tôi nên lưu ý điều gì nhất?",
+  },
+  agentSearch: {
+    pageTitle: "Tìm kiếm cùng CLARA Agent",
+    pageSubtitle:
+      "Mô tả người bạn đang tìm — Agent sẽ phân tích yêu cầu và gợi ý những hồ sơ phù hợp nhất đang có trong hệ thống.",
+    greeting:
+      "Chào {name}! Hãy mô tả người bạn đang tìm kiếm — ví dụ tính cách, sở thích, định hướng mối quan hệ... Mình sẽ phân tích và gợi ý những hồ sơ phù hợp nhất trong kho dữ liệu hiện có.",
+    inputPlaceholder: "Mô tả người bạn muốn tìm...",
+    typing: "CLARA đang phân tích yêu cầu...",
+    suggestionSerious: "💍 Nghiêm túc, định hướng lâu dài",
+    querySerious: "Mình muốn tìm người nghiêm túc, định hướng lâu dài, hướng tới kết hôn.",
+    suggestionCreative: "🎨 Yêu nghệ thuật & sáng tạo",
+    queryCreative: "Tìm người yêu nghệ thuật, sáng tạo, thích cà phê và đọc sách.",
+    suggestionActive: "🏃 Năng động, yêu thể thao",
+    queryActive: "Tìm người năng động, thích chạy bộ và thể thao.",
+    suggestionNature: "⛺ Yêu thiên nhiên, thích camping",
+    queryNature: "Tìm người yêu thiên nhiên, thích camping và cắm trại cuối tuần.",
+    analyzedPrefix: "🔎 Yêu cầu của bạn được ghi nhận với các từ khóa:",
+    resultsFoundLabel: "Tìm thấy {count} hồ sơ phù hợp trong hệ thống:",
+    resultsFallbackLabel:
+      "Mình chưa thấy từ khóa khớp rõ ràng, nên gợi ý các hồ sơ có độ tương thích cao nhất hiện có:",
+    noCandidates: "Hiện hệ thống chưa có hồ sơ nào để gợi ý.",
+  },
+  matchChat: {
+    mockBanner: "Đây là bản mô phỏng cuộc trò chuyện (demo) — chưa kết nối hệ thống nhắn tin thật.",
+    preparing: "CLARA đang chuẩn bị nội dung cuộc trò chuyện...",
+    onlineStatus: "Đang hoạt động",
+    matchedSystemNote: "🎉 Bạn và {name} đã match! Agent đã tự động gửi câu mở đầu gợi ý bên dưới.",
+    inputPlaceholder: "Nhắn tin cho {name}...",
+    typing: "{name} đang soạn tin nhắn...",
+    viewAnalysis: "Xem lại phân tích",
+    suggestionsTitle: "Gợi ý câu hỏi tiếp theo",
+    replyTemplates: [
+      "Cảm ơn bạn đã nhắn tin nha! Mình cũng thấy hồ sơ của bạn khá thú vị 😊",
+      "Haha đúng gu mình đó! Cuối tuần này bạn có rảnh không?",
+      "Mình đang hơi bận xíu, để mình trả lời kỹ hơn nhé!",
+      "Bạn có vẻ hợp tiêu chí mình đang tìm đó, kể thêm về bản thân đi!",
+      "Cảm ơn bạn đã chủ động nhắn trước, mình rất vui vì điều đó!",
+    ],
   },
   myAnalyses: {
     bannerTitle: "Hồ sơ đang tìm hiểu (My Analyses)",
@@ -239,6 +281,7 @@ const vi = {
 
 const ja: typeof vi = {
   header: {
+    navSearch: "CLARAで探す",
     navDiscover: "プロフィールを探す",
     navMyAnalyses: "進行中の分析",
     navPreferences: "条件とフィルター",
@@ -249,7 +292,7 @@ const ja: typeof vi = {
     logout: "ログアウト",
   },
   footer: {
-    tagline: "意図的な出会いのためのディシジョンサポート・コパイロット。",
+    tagline: "言葉にできなかった想いで、つながる。",
     linksTitle: "ナビゲーション",
     principlesTitle: "設計理念",
     principle1: "最終的な決定権は常にあなたにあります。",
@@ -326,6 +369,7 @@ const ja: typeof vi = {
     viewProfileShort: "プロフィール",
     analyzeWithAgent: "エージェントで分析する",
     analyzeShort: "分析する",
+    analyzeCompact: "分析する",
     distanceSuffix: "（{km}km先）",
   },
   profile: {
@@ -349,6 +393,7 @@ const ja: typeof vi = {
     radarFootnote: "※ グラフの重み付けはあなたの優先条件に基づいて計算されています",
     saveToExploring: "「進行中の分析」に保存",
     matchAndMessage: "積極的にマッチ＆メッセージを送る",
+    matchShort: "マッチ＆メッセージ",
     savedToast: "「進行中の分析」に保存しました！",
     matchToast: "エージェントのおすすめの一言を添えてマッチ申請を送りました！",
   },
@@ -374,6 +419,45 @@ const ja: typeof vi = {
     queryDateIdea: "最初のデートはどこで会うのがいい？",
     queryFinance: "金銭感覚は私と合わない？",
     queryKeyAdvice: "マッチしたら一番気をつけるべきことは？",
+  },
+  agentSearch: {
+    pageTitle: "CLARAエージェントと探す",
+    pageSubtitle:
+      "探している相手の条件を伝えてください — エージェントが分析し、システム内で最も合うプロフィールを提案します。",
+    greeting:
+      "こんにちは、{name}さん！探している相手について教えてください（性格、趣味、関係の方向性など）。今あるデータの中から最も合うプロフィールを分析してご提案します。",
+    inputPlaceholder: "探している相手について入力...",
+    typing: "CLARAがリクエストを分析中...",
+    suggestionSerious: "💍 真剣・長期的な関係",
+    querySerious: "結婚を見据えた真剣な関係を望む人を探しています。",
+    suggestionCreative: "🎨 芸術・創造性が好き",
+    queryCreative: "アートが好きで、カフェや読書を楽しむ人を探しています。",
+    suggestionActive: "🏃 アクティブでスポーツ好き",
+    queryActive: "ランニングやスポーツが好きなアクティブな人を探しています。",
+    suggestionNature: "⛺ 自然が好き、キャンプ好き",
+    queryNature: "自然が好きで、週末にキャンプを楽しむ人を探しています。",
+    analyzedPrefix: "🔎 あなたのリクエストから次のキーワードを抽出しました:",
+    resultsFoundLabel: "システム内で{count}件の合うプロフィールが見つかりました:",
+    resultsFallbackLabel:
+      "はっきり一致するキーワードは見つかりませんでしたが、相性が最も高いプロフィールをご提案します:",
+    noCandidates: "現在システムに提案できるプロフィールがありません。",
+  },
+  matchChat: {
+    mockBanner: "これはチャットのデモ（模擬）です — 実際のメッセージシステムにはまだ接続されていません。",
+    preparing: "CLARAが会話の内容を準備しています...",
+    onlineStatus: "アクティブ",
+    matchedSystemNote: "🎉 {name}さんとマッチしました！エージェントがおすすめの一言を自動送信しました。",
+    inputPlaceholder: "{name}さんにメッセージを送る...",
+    typing: "{name}さんが入力中...",
+    viewAnalysis: "分析を見直す",
+    suggestionsTitle: "次に聞いてみる質問の候補",
+    replyTemplates: [
+      "メッセージありがとう！あなたのプロフィールも興味深いなと思いました😊",
+      "それ好きです！今週末は空いてますか？",
+      "今ちょっと忙しいので、また詳しく返信しますね！",
+      "求めている条件に合いそう！もっと自己紹介聞かせて？",
+      "先にメッセージくれて嬉しいです、ありがとう！",
+    ],
   },
   myAnalyses: {
     bannerTitle: "進行中の分析プロフィール (My Analyses)",

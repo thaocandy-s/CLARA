@@ -25,10 +25,7 @@ Bộ mockup được xây dựng hoàn chỉnh với Vanilla HTML5, CSS3 hiện 
 Vì mockup được viết hoàn toàn bằng **HTML, CSS và JavaScript thuần (Zero Dependencies)**, bạn có thể mở và xem ngay lập tức bằng nhiều cách:
 
 ### Cách 1: Mở trực tiếp từ File Explorer (Nhanh nhất - Không cần cài đặt)
-1. Mở File Explorer trên Windows, điều hướng đến thư mục:
-   ```text
-   c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach
-   ```
+1. Mở File Explorer trên Windows, điều hướng đến thư mục `docs/designs/matching-coach` bên trong repo bạn đã clone (ví dụ `<đường-dẫn-repo>\docs\designs\matching-coach`).
 2. **Nhấp đúp chuột** vào file [`index.html`](index.html).
 3. Trang web sẽ tự động mở lên trong trình duyệt mặc định của bạn (Google Chrome, Microsoft Edge, Brave,...).
 4. Sử dụng thanh menu trên cùng để bấm chuyển qua lại giữa các màn hình:
@@ -40,16 +37,16 @@ Vì mockup được viết hoàn toàn bằng **HTML, CSS và JavaScript thuần
 ---
 
 ### Cách 2: Mở nhanh bằng 1 dòng lệnh Terminal / PowerShell
-Mở PowerShell hoặc Command Prompt tại thư mục dự án và chạy:
+Mở PowerShell hoặc Command Prompt tại thư mục `docs/designs/matching-coach` của repo và chạy:
 ```powershell
 # Mở trực tiếp bằng trình duyệt mặc định:
-Start-Process "c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach\index.html"
+Start-Process ".\index.html"
 
 # Hoặc mở bằng Google Chrome:
-start chrome "c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach\index.html"
+start chrome ".\index.html"
 
 # Hoặc mở bằng Microsoft Edge:
-start msedge "c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach\index.html"
+start msedge ".\index.html"
 ```
 
 ---
@@ -59,14 +56,14 @@ Nếu bạn muốn chạy qua HTTP Server cục bộ (`localhost`):
 
 - **Cách dùng Python (nếu máy có sẵn Python):**
   ```bash
-  cd c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach
+  cd docs/designs/matching-coach
   python -m http.server 3000
   ```
   👉 Mở trình duyệt truy cập: `http://localhost:3000`
 
 - **Cách dùng Node.js / npx:**
   ```bash
-  npx serve c:\Users\Admin\Documents\src\CLARA\docs\designs\matching-coach
+  npx serve docs/designs/matching-coach
   ```
 
 ---

@@ -45,6 +45,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
               alignItems: "center",
               gap: 10,
               marginBottom: 24,
+              textDecoration: "none",
             }}
           >
             <div

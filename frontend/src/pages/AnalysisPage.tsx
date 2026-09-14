@@ -41,13 +41,13 @@ const AnalysisPage = () => {
             {strings.analysis.pageSubtitle}
           </Text>
         </div>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/")}>
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/discover")}>
           {strings.analysis.backToList}
         </Button>
       </div>
 
       <Row gutter={20}>
-        {/* Column 1: Profile comparison */}
+        {/* Column 1: Profile comparison + Actions */}
         <Col xs={24} lg={7}>
           <Card styles={{ body: { padding: 0 } }} style={{ marginBottom: 16, overflow: "hidden" }}>
             <div
@@ -127,38 +127,11 @@ const AnalysisPage = () => {
             </div>
           </Card>
 
-          <Card style={{ background: "rgba(124,58,237,0.06)", borderColor: "rgba(124,58,237,0.2)" }}>
+          <Card style={{ background: "rgba(124,58,237,0.06)", borderColor: "rgba(124,58,237,0.2)", marginBottom: 16 }}>
             <Text style={{ fontSize: 12.5, color: colors.textSecondary }}>
               <strong>{strings.analysis.guardrailTitle}</strong> {strings.analysis.guardrailBody}
             </Text>
           </Card>
-        </Col>
-
-        {/* Column 2: Chat */}
-        <Col xs={24} lg={10} style={{ marginBottom: 16 }}>
-          <div style={{ height: 640 }}>
-            <ChatPanel candidate={candidate} />
-          </div>
-        </Col>
-
-        {/* Column 3: Radar + Checklist + Actions */}
-        <Col xs={24} lg={7}>
-          <Card style={{ marginBottom: 16 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <Text strong style={{ fontSize: 12.5, textTransform: "uppercase", color: colors.rose }}>
-                {strings.analysis.radarTitle}
-              </Text>
-              <Tag color={colors.match}>{interpolate(strings.analysis.consensus, { value: candidate.overallCompatibility })}</Tag>
-            </div>
-            <RadarChart axes={candidate.radarAxes} />
-            <Paragraph style={{ fontSize: 11, color: colors.textMuted, textAlign: "center", marginTop: 4, marginBottom: 0 }}>
-              {strings.analysis.radarFootnote}
-            </Paragraph>
-          </Card>
-
-          <div style={{ marginBottom: 16 }}>
-            <ChecklistPanel checklist={candidate.checklist} />
-          </div>
 
           <Card>
             <Space direction="vertical" style={{ width: "100%" }} size={8}>
@@ -180,12 +153,40 @@ const AnalysisPage = () => {
                 onClick={() => {
                   void matchCandidate(candidate.id);
                   messageApi.success(strings.analysis.matchToast);
+                  navigate(`/match-chat/${candidate.id}`);
                 }}
               >
                 {strings.analysis.matchAndMessage}
               </Button>
             </Space>
           </Card>
+        </Col>
+
+        {/* Column 2: Chat */}
+        <Col xs={24} lg={10} style={{ marginBottom: 16 }}>
+          <div style={{ height: 640 }}>
+            <ChatPanel candidate={candidate} />
+          </div>
+        </Col>
+
+        {/* Column 3: Radar + Checklist */}
+        <Col xs={24} lg={7}>
+          <Card style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <Text strong style={{ fontSize: 12.5, textTransform: "uppercase", color: colors.rose }}>
+                {strings.analysis.radarTitle}
+              </Text>
+              <Tag color={colors.match}>{interpolate(strings.analysis.consensus, { value: candidate.overallCompatibility })}</Tag>
+            </div>
+            <RadarChart axes={candidate.radarAxes} />
+            <Paragraph style={{ fontSize: 11, color: colors.textMuted, textAlign: "center", marginTop: 4, marginBottom: 0 }}>
+              {strings.analysis.radarFootnote}
+            </Paragraph>
+          </Card>
+
+          <div>
+            <ChecklistPanel checklist={candidate.checklist} />
+          </div>
         </Col>
       </Row>
     </div>

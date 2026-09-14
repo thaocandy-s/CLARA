@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Col, Progress, Row, Tag, Typography, Input, message } from "antd";
-import { CalendarOutlined, GeminiFilled, SafetyOutlined, SaveOutlined, WechatWorkOutlined } from "@ant-design/icons";
+import {
+  CalendarOutlined,
+  GeminiFilled,
+  HeartFilled,
+  SafetyOutlined,
+  SaveOutlined,
+  WechatWorkOutlined,
+} from "@ant-design/icons";
 import { useAppState } from "../store/AppStateContext";
 import { getCandidateInitials } from "../mock/data";
 import { colors } from "../theme/themeConfig";
@@ -19,8 +26,9 @@ const stageColor: Record<DatingStage, string> = {
 };
 
 const MyAnalysesPage = () => {
-  const { candidates, addNote, recalculate, archiveCandidate } = useAppState();
+  const { candidates, addNote, recalculate, archiveCandidate, matchCandidate } = useAppState();
   const { strings } = useLocale();
+  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedId, setSelectedId] = useState(candidates[0]?.id);
   const [noteDraft, setNoteDraft] = useState("");
@@ -151,6 +159,16 @@ const MyAnalysesPage = () => {
                 <Text style={{ fontSize: 12.5, color: colors.textSecondary }}>{active.nextDatePlan.title}</Text>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
+                <Button
+                  icon={<HeartFilled />}
+                  onClick={() => {
+                    void matchCandidate(active.id);
+                    messageApi.success(strings.analysis.matchToast);
+                    navigate(`/match-chat/${active.id}`);
+                  }}
+                >
+                  {strings.analysis.matchShort}
+                </Button>
                 <Link to={`/analysis/${active.id}`}>
                   <Button icon={<WechatWorkOutlined />}>{strings.myAnalyses.chatWithClara}</Button>
                 </Link>

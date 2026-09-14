@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, Layout, Menu, Tag, notification } from "antd";
-import { CompassOutlined, TeamOutlined, ControlOutlined, LogoutOutlined } from "@ant-design/icons";
+import { CompassOutlined, MessageOutlined, TeamOutlined, ControlOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { gradientBrand } from "../../theme/themeConfig";
 import { useLocale, interpolate } from "../../store/LocaleContext";
@@ -17,7 +17,8 @@ const AppLayout = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const navItems = [
-    { key: "/", label: strings.header.navDiscover, icon: <CompassOutlined /> },
+    { key: "/", label: strings.header.navSearch, icon: <MessageOutlined /> },
+    { key: "/discover", label: strings.header.navDiscover, icon: <CompassOutlined /> },
     { key: "/analyses", label: strings.header.navMyAnalyses, icon: <TeamOutlined /> },
     { key: "/preferences", label: strings.header.navPreferences, icon: <ControlOutlined /> },
   ];
@@ -107,7 +108,7 @@ const AppLayout = () => {
               className="header-brand-subtitle"
               style={{ fontSize: 11.5, color: "var(--clara-text-muted)", whiteSpace: "nowrap" }}
             >
-              Decision-Support for Intentional Dating
+              {strings.footer.tagline}
             </span>
           </div>
         </Link>
