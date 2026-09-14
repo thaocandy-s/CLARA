@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matching-Coach | Hồ sơ đang tìm hiểu & Cập nhật Phân tích</title>
+  <meta name="description" content="Quản lý các đối tượng đang tìm hiểu - Tự cập nhật ghi chú sau buổi hẹn để Agent điều chỉnh biểu đồ và lời khuyên.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <a href="index.html" class="brand-logo">C</a>
+      <div class="brand-info">
+        <h1>CLARA · Matching Coach <span class="tab-badge" style="background:var(--accent-purple); color:white;">AI Clara</span></h1>
+        <p>Profiles I'm Exploring & Offline Notes</p>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <a href="index.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Khám phá hồ sơ
+      </a>
+      <a href="compatibility-copilot.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Không gian phân tích
+      </a>
+      <a href="my-analyses.html" class="nav-tab-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Đang tìm hiểu
+        <span class="tab-badge">3</span>
+      </a>
+      <a href="preferences-criteria.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Tiêu chí & Bộ lọc
+      </a>
+    </nav>
+
+    <div class="header-right">
+      <div class="pill-agent-status">
+        <span class="dot"></span>
+        Quyền riêng tư: Agent không đọc lén chat
+      </div>
+      <div class="user-profile-btn">
+        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #6366f1, #ec4899); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;">HN</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section class="page-banner">
+      <div class="page-title-group">
+        <h2>Hồ sơ đang tìm hiểu (My Analyses)</h2>
+        <p>Nơi theo dõi tiến trình tìm hiểu thực tế. Tự cập nhật ghi chú sau các buổi gặp gỡ để Agent hoàn thiện bản đồ tương thích.</p>
+      </div>
+      <div style="font-size:0.8rem; color:var(--text-secondary); background:var(--bg-secondary); padding:0.4rem 0.85rem; border-radius:var(--radius-full); border:1px solid var(--border-light); box-shadow:var(--shadow-sm);">
+        🔒 <strong>Bảo mật:</strong> Chỉ bạn và Agent nhìn thấy không gian này
+      </div>
+    </section>
+
+    <!-- 2-Column Exploring Layout -->
+    <div class="exploring-layout">
+      <!-- Left Column: List of Saved Candidates -->
+      <aside class="exploring-list">
+        <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--text-secondary); margin-bottom:0.25rem;">
+          Danh sách đang theo dõi (3)
+        </div>
+
+        <!-- Candidate 1: Mai Linh (Active Selection) -->
+        <div class="exploring-card active">
+          <div style="width:64px; height:64px; border-radius:var(--radius-md); background:radial-gradient(circle, #ec4899, #312e81); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span style="font-weight:800; color:white; font-size:1.1rem;">ML</span>
+          </div>
+          <div class="exploring-meta">
+            <div class="exploring-name-row">
+              <span class="exploring-name">Mai Linh, 26</span>
+              <span class="stage-pill stage-chatting">Đang nhắn tin</span>
+            </div>
+            <div style="font-size:0.775rem; color:var(--text-secondary); margin-bottom:0.35rem;">
+              Product Designer · Cập nhật 2 giờ trước
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.725rem;">
+              <span style="color:#10b981; font-weight:600;">Khớp 81%</span>
+              <span style="color:var(--text-muted);">Data: 74%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 2: Tuấn Anh -->
+        <div class="exploring-card">
+          <div style="width:64px; height:64px; border-radius:var(--radius-md); background:radial-gradient(circle, #06b6d4, #1e1b4b); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span style="font-weight:800; color:white; font-size:1.1rem;">TA</span>
+          </div>
+          <div class="exploring-meta">
+            <div class="exploring-name-row">
+              <span class="exploring-name">Tuấn Anh, 29</span>
+              <span class="stage-pill stage-met-once">Đã hẹn cafe lần 1</span>
+            </div>
+            <div style="font-size:0.775rem; color:var(--text-secondary); margin-bottom:0.35rem;">
+              Bác sĩ nội trú · Cập nhật 2 ngày trước
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.725rem;">
+              <span style="color:#f59e0b; font-weight:600;">Khớp 72%</span>
+              <span style="color:var(--text-muted);">Data: 68%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate 3: Minh Châu -->
+        <div class="exploring-card">
+          <div style="width:64px; height:64px; border-radius:var(--radius-md); background:radial-gradient(circle, #8b5cf6, #1e1b4b); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span style="font-weight:800; color:white; font-size:1.1rem;">MC</span>
+          </div>
+          <div class="exploring-meta">
+            <div class="exploring-name-row">
+              <span class="exploring-name">Minh Châu, 27</span>
+              <span class="stage-pill stage-matched">Mới kết nối</span>
+            </div>
+            <div style="font-size:0.775rem; color:var(--text-secondary); margin-bottom:0.35rem;">
+              Content Lead · Đã lưu 3 ngày trước
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.725rem;">
+              <span style="color:#10b981; font-weight:600;">Khớp 84%</span>
+              <span style="color:var(--text-muted);">Data: 82%</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Active Profile Dynamic Inspection & Notes -->
+      <section class="exploring-detail-pane">
+        <!-- Target Candidate Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-light); padding-bottom:1rem;">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <h3 style="font-family:var(--font-display); font-size:1.5rem; font-weight:700;">Mai Linh · 26 tuổi</h3>
+              <span class="stage-pill stage-chatting">Giai đoạn: Đang nhắn tin thân mật</span>
+            </div>
+            <p style="font-size:0.825rem; color:var(--text-secondary); margin-top:0.25rem;">
+              Đã gửi tin nhắn mở đầu: "Gợi ý workshop làm gốm thủ công" · Đã phản hồi tích cực
+            </p>
+          </div>
+
+          <div style="display:flex; gap:0.5rem;">
+            <a href="compatibility-copilot.html" class="btn btn-outline btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Chat với Clara
+            </a>
+            <button class="btn btn-secondary btn-sm" onclick="alert('Đã lưu trữ hồ sơ này.')">Lưu trữ</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Data Completeness Status -->
+        <div class="data-confidence-box">
+          <div class="confidence-header">
+            <span>Mức độ đầy đủ dữ liệu hiện tại</span>
+            <strong style="color:#10b981;" id="candidate-confidence-pct">74%</strong>
+          </div>
+          <div class="confidence-bar-bg" style="height:8px;">
+            <div class="confidence-bar-fill" id="candidate-confidence-fill" style="width: 74%;"></div>
+          </div>
+          <div class="confidence-note">
+            💡 Mỗi khi bạn ghi nhận thêm sự thật sau buổi gặp gỡ, Agent sẽ giảm thiểu phỏng đoán và tăng độ chính xác của bản đồ tương thích.
+          </div>
+        </div>
+
+        <!-- Self-Logged Observations Box (Core Value from Maching-Coach.md) -->
+        <div class="observations-box">
+          <div class="observations-header">
+            <div>
+              <div style="font-weight:700; font-size:0.95rem; display:flex; align-items:center; gap:0.45rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-pink)" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Ghi chú điều mới học được sau khi trò chuyện / gặp gỡ
+              </div>
+              <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">
+                Agent hoàn toàn không can thiệp tin nhắn thật. Hãy ghi chú lại cảm nhận của riêng bạn.
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btn-recalculate-analysis">
+              Cập nhật lại phân tích
+            </button>
+          </div>
+
+          <div class="observation-input-group">
+            <textarea class="observation-textarea" id="note-input" placeholder="Ví dụ: 'Sau buổi cafe hôm qua, Linh chia sẻ là cô ấy thích sống ở TP.HCM lâu dài, không có ý định định cư nước ngoài, và dự định kết hôn sau 2 năm nữa...'"></textarea>
+            <button class="btn btn-primary" id="btn-add-note" style="border-radius:var(--radius-md); padding:0 1.25rem;">
+              Thêm ghi chú
+            </button>
+          </div>
+
+          <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">
+            Lịch sử ghi chú của bạn
+          </div>
+          <div class="logged-notes-list" id="logged-notes-container">
+            <div class="note-item">
+              <div class="note-time">Hôm qua lúc 21:30 · Ghi nhận bởi bạn</div>
+              <div>Linh phản hồi tin nhắn rất lịch thiệp, đồng ý đi workshop làm gốm vào chiều thứ Bảy tuần này tại Thảo Điền.</div>
+            </div>
+            <div class="note-item">
+              <div class="note-time">3 ngày trước · Khởi tạo phân tích ban đầu</div>
+              <div>Khớp về sở thích nghệ thuật và lối sống lành mạnh; cần xác nhận kế hoạch tương lai dài hạn khi gặp mặt trực tiếp.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Next Steps / Date Coaching -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+          <!-- Card: Gợi ý buổi hẹn tiếp theo -->
+          <div class="card">
+            <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--accent-pink); margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Kế hoạch buổi hẹn sắp tới
+            </div>
+            <div style="font-weight:600; font-size:0.9rem; margin-bottom:0.25rem;">Workshop Làm gốm & Cafe Thảo Điền</div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
+              Thời gian: Chiều thứ Bảy, 15:00.<br>
+              Không gian sáng tạo, ít áp lực phỏng vấn đối mặt, giúp cả hai dễ dàng mở lòng tự nhiên.
+            </p>
+          </div>
+
+          <!-- Card: Nhắc nhở an toàn & ranh giới -->
+          <div class="card">
+            <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#34d399; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Nhắc nhở an toàn & ranh giới hẹn hò
+            </div>
+            <ul style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4; padding-left:1.1rem;">
+              <li>Luôn hẹn ở nơi công cộng trong 2-3 buổi đầu.</li>
+              <li>"Tương thích cao trên app" không đồng nghĩa với việc vội vã chia sẻ thông tin tài chính cá nhân.</li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

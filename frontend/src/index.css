@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --clara-bg-primary: #f8fafc;
+  --clara-bg-secondary: #ffffff;
+  --clara-bg-tertiary: #f1f5f9;
+  --clara-text-primary: #0f172a;
+  --clara-text-secondary: #475569;
+  --clara-text-muted: #64748b;
+  --clara-border-light: rgba(15, 23, 42, 0.08);
+  --clara-header-bg: rgba(255, 255, 255, 0.9);
+  --clara-scrollbar-thumb: rgba(15, 23, 42, 0.16);
+  --clara-chart-grid: rgba(15, 23, 42, 0.08);
+  --clara-chart-axis: rgba(15, 23, 42, 0.12);
+  --clara-glow-1: rgba(225, 29, 72, 0.06);
+  --clara-glow-2: rgba(124, 58, 237, 0.05);
+}
+
+[data-theme="dark"] {
+  --clara-bg-primary: #0b1120;
+  --clara-bg-secondary: #131c2e;
+  --clara-bg-tertiary: #1b2437;
+  --clara-text-primary: #e2e8f0;
+  --clara-text-secondary: #a3b0c2;
+  --clara-text-muted: #7c8aa0;
+  --clara-border-light: rgba(255, 255, 255, 0.08);
+  --clara-header-bg: rgba(13, 19, 33, 0.88);
+  --clara-scrollbar-thumb: rgba(255, 255, 255, 0.18);
+  --clara-chart-grid: rgba(255, 255, 255, 0.1);
+  --clara-chart-axis: rgba(255, 255, 255, 0.14);
+  --clara-glow-1: rgba(225, 29, 72, 0.1);
+  --clara-glow-2: rgba(124, 58, 237, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--clara-scrollbar-thumb) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--clara-scrollbar-thumb);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e11d48;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: var(--clara-bg-primary);
+  color: var(--clara-text-primary);
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -150px;
+  left: 12%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, var(--clara-glow-1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -150px;
+  right: 10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--clara-glow-2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(90px);
+}
+
+.font-display {
+  font-family: "Outfit", sans-serif;
+}
+
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 28px -6px rgba(15, 23, 42, 0.14), 0 6px 12px -4px rgba(15, 23, 42, 0.08);
+}
+
+.card-bookmark-btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.card-bookmark-btn:hover {
+  background: #ffffff !important;
+  color: #e11d48 !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.card-name-link {
+  text-decoration: none;
+}
+
+.card-name-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1180px) {
+  .header-brand-subtitle,
+  .header-status-pill,
+  .header-user-meta {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .ant-menu-horizontal .ant-menu-title-content {
+    display: none;
+  }
+}

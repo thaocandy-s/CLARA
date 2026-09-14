@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matching-Coach | Không gian Phân tích Tương thích Chuyên sâu</title>
+  <meta name="description" content="Không gian phân tích tương thích riêng tư với AI Agent - Đối chiếu giá trị, checklist trực quan và bản đồ radar.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <a href="index.html" class="brand-logo">C</a>
+      <div class="brand-info">
+        <h1>CLARA · Matching Coach <span class="tab-badge" style="background:var(--accent-purple); color:white;">AI Clara</span></h1>
+        <p>Private Compatibility Analysis Studio</p>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <a href="index.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Khám phá hồ sơ
+      </a>
+      <a href="compatibility-copilot.html" class="nav-tab-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Không gian phân tích
+        <span class="tab-badge">Mục tiêu</span>
+      </a>
+      <a href="my-analyses.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Đang tìm hiểu
+        <span class="tab-badge">3</span>
+      </a>
+      <a href="preferences-criteria.html" class="nav-tab-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Tiêu chí & Bộ lọc
+      </a>
+    </nav>
+
+    <div class="header-right">
+      <div class="pill-agent-status">
+        <span class="dot"></span>
+        Chế độ phân tích riêng tư (Không chia sẻ đối phương)
+      </div>
+      <a href="index.html" class="btn btn-outline btn-sm">
+        ← Quay lại danh sách
+      </a>
+    </div>
+  </header>
+
+  <!-- 3-Column Power Layout -->
+  <main class="main-content" style="padding-top:0.75rem; padding-bottom:0.75rem;">
+    <div class="clara-workspace copilot-workspace">
+
+      <!-- ==========================================
+           COLUMN 1: Profile Comparison & Completeness
+           ========================================== -->
+      <section class="column-left">
+        <!-- Target Candidate Card Spotlight -->
+        <div class="comparison-card">
+          <div class="target-profile-spotlight">
+            <div style="width:100%; height:100%; background:radial-gradient(circle at 50% 30%, #f472b6 0%, #e11d48 60%, #4c0519 100%); display:flex; align-items:center; justify-content:center;">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.2">
+                <circle cx="12" cy="8" r="4.5" fill="rgba(255,255,255,0.2)"/>
+                <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5" fill="rgba(255,255,255,0.2)"/>
+              </svg>
+            </div>
+            <div class="candidate-gradient-overlay"></div>
+            <div class="spotlight-info">
+              <div style="font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:#0f172a;">Mai Linh, 26</div>
+              <div style="font-size:0.75rem; color:var(--text-secondary);">Product Designer · TP.HCM</div>
+            </div>
+          </div>
+
+          <!-- Data Completeness & Confidence Score -->
+          <div style="padding:1rem;">
+            <div class="data-confidence-box">
+              <div class="confidence-header">
+                <span>Độ đầy đủ dữ liệu</span>
+                <strong style="color:#10b981;">74% (Tin cậy khá)</strong>
+              </div>
+              <div class="confidence-bar-bg">
+                <div class="confidence-bar-fill" style="width: 74%;"></div>
+              </div>
+              <div class="confidence-note">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Dựa trên 24 câu hỏi hồ sơ & Bio. Chưa có dữ liệu tài chính cá nhân.
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparison Table: User vs Target Candidate -->
+          <div class="comparison-table">
+            <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-secondary); margin-bottom:0.25rem;">
+              Đối chiếu tiêu chí trực tiếp
+            </div>
+
+            <!-- Row 1 -->
+            <div class="compare-row">
+              <div class="compare-label">Mục tiêu mối quan hệ</div>
+              <div class="compare-val user-val">Bạn: Nghiêm túc, kết hôn trong 2-3 năm</div>
+              <div class="compare-val target-val">Linh: Tìm hiểu lâu dài, cùng phát triển</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="compare-row">
+              <div class="compare-label">Ranh giới / Non-negotiables</div>
+              <div class="compare-val user-val">Bạn: Không hút thuốc, yêu động vật</div>
+              <div class="compare-val target-val">Linh: Không thuốc lá, thích chó mèo</div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="compare-row">
+              <div class="compare-label">Nhịp sống & Cuối tuần</div>
+              <div class="compare-val user-val">Bạn: Cà phê sáng, chạy bộ, nghỉ ngơi</div>
+              <div class="compare-val target-val">Linh: Làm gốm, cafe sách, workshop</div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="compare-row">
+              <div class="compare-label">Kế hoạch tương lai / Định cư</div>
+              <div class="compare-val user-val">Bạn: Ổn định tại TP.HCM</div>
+              <div class="compare-val target-val" style="border-left-color:var(--status-check);">Linh: Chưa nêu rõ (Cần xác nhận)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Ethical Guardrail Box -->
+        <div class="guardrail-card">
+          <strong>⚖️ Nguyên tắc Matching-Coach:</strong>
+          Agent không chấm điểm con người mà chỉ phân tích mức độ tương thích dựa trên tiêu chí bạn thiết lập. Hãy luôn dùng sự quan sát chân thực của chính bạn khi gặp mặt.
+        </div>
+      </section>
+
+      <!-- ==========================================
+           COLUMN 2: AI Agent Chat & Interactive Guidance
+           ========================================== -->
+      <section class="column-center">
+        <!-- Chat Header -->
+        <div class="chat-header">
+          <div class="chat-agent-meta">
+            <div class="agent-icon-avatar">✦</div>
+            <div>
+              <div style="font-weight:700; font-size:0.95rem; display:flex; align-items:center; gap:0.5rem;">
+                CLARA Dating Coach
+                <span class="badge badge-purple" style="font-size:0.65rem;">Active Clara</span>
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-secondary);">
+                Đồng hành phân tích khách quan · Dữ liệu bảo mật 100%
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="alert('Đã xóa phiên chat này theo yêu cầu bảo mật!')" title="Xóa lịch sử trò chuyện">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Xóa lịch sử
+          </button>
+        </div>
+
+        <!-- Chat Conversation Area -->
+        <div class="chat-messages" id="chat-messages">
+          <!-- Initial Agent Greeting -->
+          <div class="message-bubble agent">
+            <div class="bubble-content">
+              Xin chào Hải Nam! Tôi đã hoàn thành quét nhanh độ khớp giữa bạn và <strong>Mai Linh</strong> dựa trên 8 tiêu chí trọng tâm của bạn.
+              <br><br>
+              🎉 <strong>Điểm sáng:</strong> Hai bạn đều thuộc tuýp người hướng nội vừa phải, thích lối sống lành mạnh (không hút thuốc) và đều trân trọng sự nghiệp riêng nhưng mong muốn xây dựng mối quan hệ nghiêm túc.
+              
+              <!-- Agent Suggested Openers / Icebreakers -->
+              <div class="agent-recommendation-card">
+                <div class="rec-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  Gợi ý mở đầu trò chuyện (Icebreaker)
+                </div>
+                <ul class="rec-list">
+                  <li class="rec-item">"Chào Linh, anh thấy em nhắc tới gốm thủ công trong bio. Em hay đi workshop vào dịp cuối tuần à, có chỗ nào thú vị gợi ý anh với?"</li>
+                  <li class="rec-item">"Anh cũng rất thích phong cách thiết kế tối giản. Điều gì khiến em chọn gắn bó với mảng Product Design vậy?"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Clarification Question -->
+          <div class="message-bubble user">
+            <div class="bubble-content">
+              Agent xem giúp mình: Linh có điểm gì khác biệt lớn có thể trở thành rào cản (deal-breaker) không?
+            </div>
+          </div>
+
+          <!-- Agent Response with Contextual Caution -->
+          <div class="message-bubble agent">
+            <div class="bubble-content">
+              Tôi không thấy dấu hiệu xung đột nghiêm trọng (deal-breaker) về lối sống hay đạo đức. Tuy nhiên, có <strong>2 điểm cần làm rõ</strong>:
+              <br><br>
+              1. <strong>Cân bằng thời gian:</strong> Linh làm tại một startup đang ở giai đoạn tăng trưởng nhanh. Đôi khi có thể phải OT hoặc làm việc vào thứ Bảy. Bạn cần hỏi xem nhịp sinh hoạt này có ảnh hưởng tới thời gian hẹn hò không.<br>
+              2. <strong>Kế hoạch kết hôn:</strong> Bạn mong muốn ổn định trong 2-3 năm tới, còn hồ sơ của Linh mới dừng ở mức "Tìm hiểu lâu dài, tùy duyên".
+              
+              <div class="agent-recommendation-card">
+                <div class="rec-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  3 câu hỏi sâu nên hỏi trong 2 buổi hẹn đầu
+                </div>
+                <ul class="rec-list">
+                  <li class="rec-item">"Khi công việc dồn dập, em thường xả stress bằng cách nào: muốn ở một mình hay trò chuyện với ai đó?"</li>
+                  <li class="rec-item">"Em có hình dung rõ về cuộc sống gia đình trong 3-5 năm tới chưa?"</li>
+                  <li class="rec-item">"Đối với em, sự tôn trọng không gian riêng tư được thể hiện cụ thể ra sao?"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestion Prompt Chips -->
+        <div class="chat-suggestions">
+          <button class="suggestion-chip" data-query="Gợi ý thêm câu mở đầu tự nhiên khác?">💬 Thêm câu mở đầu</button>
+          <button class="suggestion-chip" data-query="Nên hẹn gặp ở địa điểm nào cho buổi date đầu tiên?">☕ Ý tưởng buổi hẹn đầu</button>
+          <button class="suggestion-chip" data-query="Quan điểm tài chính của Linh có mâu thuẫn với tôi không?">💰 Kiểm tra quan điểm tài chính</button>
+          <button class="suggestion-chip" data-query="Nếu match thì tôi nên lưu ý điều gì nhất?">🎯 Lời khuyên quan trọng nhất</button>
+        </div>
+
+        <!-- Chat Input Field -->
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chat-input" placeholder="Hỏi Clara về sự phù hợp, điều băn khoăn, câu hỏi nên hỏi...">
+          <button class="btn btn-primary btn-icon" id="chat-send-btn" title="Gửi câu hỏi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           COLUMN 3: Checklist & Compatibility Map
+           ========================================== -->
+      <section class="column-right">
+        <!-- Compatibility Radar Map -->
+        <div class="radar-chart-card">
+          <div class="radar-title-row">
+            <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; color:var(--text-accent);">
+              Bản đồ tương thích 7 trục
+            </span>
+            <span class="badge badge-match" style="font-size:0.68rem;">Đồng thuận 81%</span>
+          </div>
+
+          <!-- SVG Radar Container rendered by app.js -->
+          <div class="radar-svg-container" id="radar-container">
+            <!-- Populated dynamically via app.js -->
+          </div>
+
+          <div style="font-size:0.725rem; color:var(--text-muted); text-align:center; margin-top:0.25rem;">
+            * Trọng số biểu đồ đã tính toán theo các tiêu chí ưu tiên của bạn
+          </div>
+        </div>
+
+        <!-- 3-Tier Visual Checklist -->
+        <div class="checklist-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <div style="font-family:var(--font-display); font-weight:700; font-size:0.95rem;">
+              Checklist đánh giá tương thích
+            </div>
+            <span style="font-size:0.75rem; color:var(--text-secondary);">3 Nhóm trạng thái</span>
+          </div>
+
+          <!-- Group 1: Aligned / Matched -->
+          <div class="checklist-group">
+            <div class="group-heading matched">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Phù hợp & Đồng điệu (4)
+            </div>
+
+            <div class="check-item matched">
+              <div class="check-item-header">
+                <span>Lối sống lành mạnh</span>
+                <span class="badge badge-match" style="font-size:0.65rem;">Khớp 100%</span>
+              </div>
+              <div class="check-item-detail">Cả hai đều không hút thuốc lá và ưa thích các hoạt động ban ngày.</div>
+              <div class="check-data-source">Nguồn: Câu hỏi khảo sát hồ sơ</div>
+            </div>
+
+            <div class="check-item matched">
+              <div class="check-item-header">
+                <span>Ranh giới cá nhân</span>
+                <span class="badge badge-match" style="font-size:0.65rem;">Khớp 90%</span>
+              </div>
+              <div class="check-item-detail">Đều coi trọng việc cho nhau không gian riêng và nuôi dưỡng đam mê cá nhân.</div>
+              <div class="check-data-source">Nguồn: Phân tích Bio & Trả lời trắc nghiệm</div>
+            </div>
+          </div>
+
+          <!-- Group 2: Needs Check -->
+          <div class="checklist-group">
+            <div class="group-heading check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Cần xác nhận thêm khi trò chuyện (2)
+            </div>
+
+            <div class="check-item check">
+              <div class="check-item-header">
+                <span>Kế hoạch thời gian & Gia đình</span>
+                <span class="badge badge-check" style="font-size:0.65rem;">Chưa đủ dữ liệu</span>
+              </div>
+              <div class="check-item-detail">Bạn muốn hướng tới kết hôn trong 2-3 năm; Linh chưa đề cập mốc thời gian cụ thể.</div>
+              <div class="check-data-source">Nguồn: Hồ sơ chưa điền mục này</div>
+            </div>
+
+            <div class="check-item check">
+              <div class="check-item-header">
+                <span>Phong cách chi tiêu</span>
+                <span class="badge badge-check" style="font-size:0.65rem;">Cần quan sát</span>
+              </div>
+              <div class="check-item-detail">Chưa có thông tin về quan điểm tiết kiệm vs trải nghiệm hiện tại.</div>
+              <div class="check-data-source">Nguồn: Nên cảm nhận qua cách chọn địa điểm hẹn</div>
+            </div>
+          </div>
+
+          <!-- Group 3: Potential Friction / Deal-Breaker Alert -->
+          <div class="checklist-group">
+            <div class="group-heading friction">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Điểm khác biệt cần cân nhắc (1)
+            </div>
+
+            <div class="check-item friction">
+              <div class="check-item-header">
+                <span>Áp lực thời gian công việc</span>
+                <span class="badge badge-friction" style="font-size:0.65rem;">Lưu ý</span>
+              </div>
+              <div class="check-item-detail">Linh đang ở giai đoạn startup bận rộn; có thể không duy trì được nhắn tin liên tục mỗi ngày.</div>
+              <div class="check-data-source">Nguồn: Bio "Đang chạy nước rút cho startup"</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Decision Action Bar -->
+        <div class="workspace-actions">
+          <div style="display:flex; gap:0.5rem;">
+            <a href="my-analyses.html" class="btn btn-secondary btn-sm" style="flex:1;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              Lưu vào "Đang tìm hiểu"
+            </a>
+            <button class="btn btn-primary btn-sm" style="flex:1.4;" onclick="alert('Đã gửi lời mời kết nối kèm câu mở đầu gợi ý từ Agent!')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              Chủ động Match & Gửi lời nhắn
+            </button>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // Initialize 7-Axis Compatibility Radar Chart for Mai Linh
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRadarChart('radar-container', [
+        { label: 'Mục tiêu lâu dài', value: 85 },
+        { label: 'Giá trị sống', value: 90 },
+        { label: 'Giao tiếp', value: 80 },
+        { label: 'Lối sống & Thói quen', value: 85 },
+        { label: 'Sở thích & Giải trí', value: 75 },
+        { label: 'Tài chính & Thực tế', value: 65 },
+        { label: 'Kế hoạch tương lai', value: 70 }
+      ]);
+    });
+  </script>
+</body>
+</html>
